@@ -65,13 +65,14 @@ cd ai-workplace
 docker compose up -d  # 도커 컴포즈 시작하기
 docker compose down   # 도커 컴포즈 종료하기
 ```
+- 접속 URL : http://localhost:5678
 
 ## n8n Workflow Export
 ```bash
 $ ./export-workflows.sh
 ```
 - n8n 에서 작업한 모든 workflow 를 worflows 폴더로 내보내기. 
-- 명령 실행 후 workflows 폴더에서 <workflow 명>_ <ID>.json 파일 확인한다.
+- 명령 실행 후 workflows 폴더에서 <workflow 명>_<ID 명>.json 파일 확인한다.
 
 ## n8n Workflow Import
 ```bash
