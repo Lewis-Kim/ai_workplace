@@ -1,0 +1,6 @@
+credentials/
+*.sqlite
+.env
+*.log
+crash.journal
+n8n_runtime/
