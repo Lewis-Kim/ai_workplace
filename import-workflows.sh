@@ -1,14 +1,26 @@
 #!/bin/bash
 # =====================================
-# n8n workflow import script
+# Safe n8n workflow import (file by file)
 # =====================================
 
 SERVICE_NAME="n8n"
-INPUT_DIR="./workflows"
+WORKFLOW_DIR="workflows"
 
-echo "▶ Importing n8n workflows from $INPUT_DIR"
+echo "▶ Importing n8n workflows from ./$WORKFLOW_DIR"
 
-docker-compose exec "$SERVICE_NAME" n8n import:workflow \
-  --input="/workflows"
+FILES=$(ls "$WORKFLOW_DIR"/*.json 2>/dev/null)
 
-echo "✅ Import completed."
+if [ -z "$FILES" ]; then
+  echo "ℹ️ No workflow JSON files found."
+  exit 0
+fi
+
+for file in $FILES; do
+  filename=$(basename "$file")
+  echo " - importing: $filename"
+
+  docker-compose exec -T "$SERVICE_NAME" n8n import:workflow \
+    --input="/workflows/$filename"
+done
+
+echo "✅ Import completed successfully."
