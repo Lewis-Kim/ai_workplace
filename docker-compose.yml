@@ -3,7 +3,7 @@ version: "3.8"
 services:
   n8n:
     image: n8nio/n8n
-    container_name: n8n
+    container_name: n8n_project3
     ports:
       - "5678:5678"
     environment:
