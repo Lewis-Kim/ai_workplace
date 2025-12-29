@@ -54,13 +54,30 @@ git push origin main
 ```
 
 ## 프로젝트 다운로드
-```
+```bash
 git clone https://github.com/Lewis-Kim/ai-workplace.git
+```
+
+## 프로젝트 구조
+```bash
+ai_workplace/
+ ├─ docker-compose.yml
+ ├─ export-workflows.sh
+ ├─ import-workflows.sh
+ ├─ .env
+ ├─ workflows/              ✅ Git 관리 (순수 JSON)
+ │   ├─ order_flow.json
+ │   └─ slack_alert.json
+ └─ n8n_runtime/            ❌ Git 제외 (n8n 내부 데이터)
+     ├─ database.sqlite
+     ├─ credentials/
+     └─ config
+
 ```
 
 ## n8n 서비스 시작, 종료하기
 프로젝트 폴더에서 아래와 같이 실행한다. 
-```
+```bash
 cd ai-workplace
 docker compose up -d  # 도커 컴포즈 시작하기
 docker compose down   # 도커 컴포즈 종료하기
