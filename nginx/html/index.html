@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Chat</title>
+</head>
+<body>
+  <h2>AI Agent Chat</h2>
+
+  <textarea id="msg" rows="4" cols="50"></textarea><br>
+  <button onclick="send()">Send</button>
+
+  <pre id="log"></pre>
+
+  <script>
+    function send() {
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          message: document.getElementById('msg').value
+        })
+      })
+      .then(r => r.json())
+      .then(d => {
+        console.log(d.output)
+        document.getElementById('log').textContent +=
+          "\nAI: " + d.reply;
+      });
+    }
+  </script>
+</body>
+</html>

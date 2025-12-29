@@ -1,0 +1,41 @@
+{
+  "name": "AI Chat Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "ai-chat"
+      },
+      "name": "Chat Trigger",
+      "type": "n8n-nodes-base.chatTrigger",
+      "typeVersion": 1,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "systemMessage": "너는 회사 내부 업무를 돕는 AI Assistant다. 답변은 한국어로 간결하게 한다.",
+        "userMessage": "={{$json.message}}"
+      },
+      "name": "AI Agent",
+      "type": "n8n-nodes-base.aiAgent",
+      "typeVersion": 1,
+      "position": [550, 300]
+    },
+    {
+      "parameters": {
+        "response": "={{$json.output}}"
+      },
+      "name": "Respond to Chat",
+      "type": "n8n-nodes-base.respondToChat",
+      "typeVersion": 1,
+      "position": [800, 300]
+    }
+  ],
+  "connections": {
+    "Chat Trigger": {
+      "main": [[{ "node": "AI Agent", "type": "main", "index": 0 }]]
+    },
+    "AI Agent": {
+      "main": [[{ "node": "Respond to Chat", "type": "main", "index": 0 }]]
+    }
+  }
+}
