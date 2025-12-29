@@ -1,35 +1,51 @@
-
 @echo off
-REM ==========================================
-REM n8n workflow export (Windows BAT)
-REM ==========================================
+setlocal EnableDelayedExpansion
 
-set SERVICE_NAME=n8n
-set OUTPUT_DIR=workflows
+REM ================================
+REM n8n workflow export (SAFE)
+REM ================================
 
-if not exist %OUTPUT_DIR% (
-  mkdir %OUTPUT_DIR%
+set "SERVICE_NAME=n8n"
+set "OUTPUT_DIR=workflows"
+set "COMPOSE_CMD=docker-compose"
+set "TMP_FILE=_wf_list.tmp"
+
+if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
+
+echo Exporting n8n workflows...
+echo.
+
+REM 1. 워크플로우 목록을 임시 파일로 저장
+%COMPOSE_CMD% exec -T %SERVICE_NAME% n8n list:workflow > "%TMP_FILE%"
+
+REM 2. 한 줄씩 안전하게 처리
+for /f "tokens=1,* delims=|" %%A in (%TMP_FILE%) do (
+
+  set "ID=%%A"
+  set "NAME=%%B"
+
+  if "!ID!"=="" goto :continue
+
+  REM 파일명 안전화
+  set "SAFE_NAME=!NAME!"
+  set "SAFE_NAME=!SAFE_NAME: =_!"
+  set "SAFE_NAME=!SAFE_NAME:/=_!"
+  set "SAFE_NAME=!SAFE_NAME:\=_!"
+  set "SAFE_NAME=!SAFE_NAME::=_!"
+
+  set "FILE_NAME=!SAFE_NAME!_!ID!.json"
+
+  echo exporting: !NAME! (id=!ID!)
+
+  %COMPOSE_CMD% exec -T %SERVICE_NAME% n8n export:workflow ^
+    --id=!ID! ^
+    --output="/workflows/!FILE_NAME!"
+
+  :continue
 )
 
-echo ▶ Exporting n8n workflows...
+del "%TMP_FILE%" >nul 2>&1
 
-REM n8n list:workflow 결과에서 ID|NAME 만 처리
-for /f "usebackq tokens=1,2 delims=|" %%A in (`
-  docker-compose exec -T %SERVICE_NAME% n8n list:workflow ^| find "|"
-`) do (
-
-  set ID=%%A
-  set NAME=%%B
-
-  REM delayed expansion 필요
-  call set SAFE_NAME=%%NAME: =_%%
-  call set FILE_NAME=%%SAFE_NAME%%_%%ID%%.json
-
-  echo  - exporting: %%B ^(id=%%A^) → !FILE_NAME!
-
-  docker-compose exec -T %SERVICE_NAME% n8n export:workflow ^
-    --id=%%A ^
-    --output=/workflows/!FILE_NAME!
-)
-
-echo ✅ Export completed.
+echo.
+echo Export completed.
+endlocal
