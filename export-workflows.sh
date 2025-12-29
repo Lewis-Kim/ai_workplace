@@ -1,19 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env zsh
+
 SERVICE_NAME="n8n"
 OUTPUT_DIR="./workflows"
 
 mkdir -p "$OUTPUT_DIR"
 echo "▶ Exporting n8n workflows..."
 
-# list:workflow 출력에서 "ID|NAME" 라인만 처리
-docker-compose exec -T "$SERVICE_NAME" n8n list:workflow \
-| grep '|' \
-| while IFS='|' read -r id name; do
-  # 안전한 파일명
-  safe_name=$(echo "$name" | tr ' ' '_' | tr -cd '[:alnum:]_')
+# 🔑 zsh 배열로 한 번에 읽기 (stdin 안전)
+WORKFLOWS=("${(@f)$(docker-compose exec -T "$SERVICE_NAME" n8n list:workflow | grep '|')}")
+
+echo "▶ Found workflows: ${#WORKFLOWS[@]}"
+
+for line in "${WORKFLOWS[@]}"; do
+  id="${line%%|*}"
+  name="${line#*|}"
+
+  safe_name="${name// /_}"
+  safe_name="${safe_name//[^a-zA-Z0-9_]/}"
   file_name="${safe_name}_${id}.json"
 
-  echo " - exporting: $name (id=$id) → $file_name"
+  echo " - exporting: $name (id=$id)"
 
   docker-compose exec -T "$SERVICE_NAME" n8n export:workflow \
     --id="$id" \
