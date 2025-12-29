@@ -62,8 +62,10 @@ git clone https://github.com/Lewis-Kim/ai-workplace.git
 ```bash
 ai_workplace/
  ├─ docker-compose.yml
- ├─ export-workflows.sh
- ├─ import-workflows.sh
+ ├─ export-workflows.sh     리눅스/맥 사용자 파일
+ ├─ export-workflows.bat    윈도우 사용자 파일
+ ├─ import-workflows.sh     리눅스/맥 사용자 파일
+ ├─ import-workflows.bat    윈도우 사용자 파일
  ├─ .env
  ├─ workflows/              ✅ Git 관리 (순수 JSON)
  │   ├─ order_flow.json
@@ -96,3 +98,16 @@ $ ./export-workflows.sh
 $ ./import-workflows.sh
 ```
 - workflow 폴더의 모든 json 파일을 n8n 으로 Import 한다. 
+
+## 윈도우 cmd 사용자.
+```cmd
+cd 프로젝트폴더 로이동
+.\export-workflows.bat
+```
+
+## 윈도우 powershell 사용자
+```powershell
+powershell을 관리자 권한으로 실행
+cd 프로젝트폴더 로이동
+cmd /c .\export-workflows.bat
+```

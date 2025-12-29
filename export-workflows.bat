@@ -5,7 +5,7 @@ REM ================================
 REM n8n workflow export (SAFE)
 REM ================================
 
-set "SERVICE_NAME=n8n"
+set "SERVICE_NAME=n8n_project3"
 set "OUTPUT_DIR=workflows"
 set "COMPOSE_CMD=docker-compose"
 set "TMP_FILE=_wf_list.tmp"

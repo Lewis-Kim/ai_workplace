@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-set "SERVICE_NAME=n8n"
+set "SERVICE_NAME=n8n_project3"
 set "WORKFLOW_DIR=workflows"
 set "COMPOSE_CMD=docker-compose"
 
