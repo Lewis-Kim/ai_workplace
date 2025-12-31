@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import requests
+from qdrant_client import QdrantClient
+from qdrant_client.models import VectorParams, Distance
 
 app = FastAPI()
 
-N8N_CHAT_URL = "http://n8n:5678/webhook/95c101c8-5f3d-480f-8969-8173add1ff3d/chat"
+N8N_CHAT_URL = "http://n8n:5678/webhook/chat"
 
 class ChatRequest(BaseModel):
     message: str
@@ -39,3 +41,16 @@ def call_n8n(payload: dict):
         json=payload
     )
     return r.json()
+
+@app.get("/create_vector_store")
+def create():
+    client = QdrantClient(host="qdrant", port=6333)
+
+    client.create_collection(
+        collection_name="documents",
+        vectors_config=VectorParams(
+            size=768,
+            distance=Distance.COSINE
+        )
+    )
+    return {"message": "create success!"}

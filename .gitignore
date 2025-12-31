@@ -4,3 +4,4 @@ credentials/
 *.log
 crash.journal
 n8n_runtime/
+qdrant_data/
