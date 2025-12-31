@@ -111,3 +111,7 @@ powershell을 관리자 권한으로 실행
 cd 프로젝트폴더 로이동
 cmd /c .\export-workflows.bat
 ```
+
+---
+## Qdrant Vector DB
+- 관리콘솔 : http://localhost:6333/dashboard#/collections
