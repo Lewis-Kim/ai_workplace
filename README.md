@@ -83,6 +83,9 @@ ai_workplace/
 cd ai-workplace
 docker compose up -d  # 도커 컴포즈 시작하기
 docker compose down   # 도커 컴포즈 종료하기
+또는 
+./start_service.sh  # windows : start_service.sh
+./stop_service.sh   # windows : stop_service.sh
 ```
 - 접속 URL : http://localhost:5678
 
