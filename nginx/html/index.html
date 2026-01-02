@@ -1,33 +1,203 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>AI Chat</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Chatbot System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <h2>AI Agent Chat</h2>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-header">
+                <div class="profile-info">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Kim" alt="Profile" class="profile-avatar">
+                    <div class="profile-details">
+                        <h3 class="profile-name">Kim Min-su</h3>
+                        <p class="profile-role">IT Support Team</p>
+                    </div>
+                    <span class="online-indicator"></span>
+                </div>
+                <button class="close-sidebar" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search department...">
+            </div>
+        </div>
 
-  <textarea id="msg" rows="4" cols="50"></textarea><br>
-  <button onclick="send()">Send</button>
+        <!-- Department Menu -->
+        <nav class="department-menu">
+            <!-- Administrative Section -->
+            <div class="menu-section">
+                <h4 class="section-title">ADMINISTRATIVE</h4>
+                <ul class="department-list">
+                    <li class="department-item" data-department="hr">
+                        <i class="fas fa-user department-icon"></i>
+                        <span class="department-name">HR</span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>
+                    <li class="department-item" data-department="finance">
+                        <i class="fas fa-wallet department-icon"></i>
+                        <span class="department-name">Finance</span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>
+                    <li class="department-item" data-department="legal">
+                        <i class="fas fa-gavel department-icon"></i>
+                        <span class="department-name">Legal</span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>
+                </ul>
+            </div>
 
-  <pre id="log"></pre>
+            <!-- Technical Section -->
+            <div class="menu-section">
+                <h4 class="section-title">TECHNICAL</h4>
+                <ul class="department-list">
+                    <li class="department-item" data-department="development">
+                        <i class="fas fa-code department-icon"></i>
+                        <span class="department-name">Development</span>
+                        <span class="notification-badge"></span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>
+                    <li class="department-item active" data-department="it-support">
+                        <i class="fas fa-laptop department-icon"></i>
+                        <span class="department-name">IT Support</span>
+                        <i class="fas fa-check check-icon"></i>
+                    </li>
+                    <li class="department-item" data-department="qa">
+                        <i class="fas fa-bug department-icon"></i>
+                        <span class="department-name">QA</span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>
+                </ul>
+            </div>
 
-  <script>
-    function send() {
-      fetch('/api/chat', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          message: document.getElementById('msg').value
-        })
-      })
-      .then(r => r.json())
-      .then(d => {
-        console.log(d.output)
-        document.getElementById('log').textContent +=
-          "\nAI: " + d.reply;
-      });
-    }
-  </script>
+            <!-- Business Section -->
+            <div class="menu-section">
+                <h4 class="section-title">BUSINESS</h4>
+                <ul class="department-list">
+                    <li class="department-item" data-department="sales">
+                        <i class="fas fa-chart-line department-icon"></i>
+                        <span class="department-name">Sales</span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>
+                    <li class="department-item" data-department="marketing">
+                        <i class="fas fa-bullhorn department-icon"></i>
+                        <span class="department-name">Marketing</span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Bottom Menu -->
+        <div class="bottom-menu">
+            <button class="menu-button">
+                <i class="fas fa-cog"></i>
+                <span>App Settings</span>
+            </button>
+            <button class="menu-button">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Log Out</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="chat-header">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="header-info">
+                <span class="header-label">DEPARTMENT</span>
+                <h1 class="header-title" id="departmentTitle">IT Support Team</h1>
+            </div>
+            <button class="settings-button">
+                <i class="fas fa-cog"></i>
+            </button>
+        </header>
+
+        <!-- Chat Container -->
+        <div class="chat-container" id="chatContainer">
+            <!-- Bot Info -->
+            <div class="bot-info">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TechBot" alt="Tech Bot" class="bot-avatar-large">
+                <h2 class="bot-name">Tech Bot</h2>
+                <div class="bot-status">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">Online • Typically replies instantly</span>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="messages" id="messages">
+                <div class="message-date">Today, 9:41 AM</div>
+                
+                <div class="message bot-message">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TechBot" alt="Bot" class="message-avatar">
+                    <div class="message-content">
+                        <span class="message-sender">Tech Bot</span>
+                        <div class="message-bubble">
+                            Hello! I'm the IT Team Manager. 👋<br>
+                            How can I assist you with your hardware or software needs today?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message user-message">
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            Hi! I seem to be having trouble with my VPN connection.
+                        </div>
+                        <span class="message-status">Read 9:42 AM</span>
+                    </div>
+                </div>
+
+                <div class="message bot-message">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TechBot" alt="Bot" class="message-avatar">
+                    <div class="message-content">
+                        <span class="message-sender">Tech Bot</span>
+                        <div class="quick-actions">
+                            <button class="quick-action-btn">
+                                <i class="fas fa-wifi"></i>
+                                Connection Issues
+                            </button>
+                            <button class="quick-action-btn">
+                                <i class="fas fa-key"></i>
+                                Reset Password
+                            </button>
+                            <button class="quick-action-btn">
+                                <i class="fas fa-download"></i>
+                                Download VPN Client
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Input -->
+        <div class="message-input-container">
+            <button class="attach-button">
+                <i class="fas fa-plus"></i>
+            </button>
+            <input type="text" class="message-input" id="messageInput" placeholder="Type a message...">
+            <button class="send-button" id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
