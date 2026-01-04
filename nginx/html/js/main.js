@@ -279,16 +279,18 @@ function loadDepartment(dept) {
     scrollToBottom();
 }
 
-// Send Message
 function sendMessage() {
     const text = messageInput.value.trim();
     if (!text) return;
 
     const config = departments[currentDepartment];
     const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const timeString = now.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit'
+    });
 
-    // Add user message
+    // 사용자 메시지 출력
     const userMessage = `
         <div class="message user-message">
             <div class="message-content">
@@ -299,29 +301,97 @@ function sendMessage() {
             </div>
         </div>
     `;
-
     messagesContainer.insertAdjacentHTML('beforeend', userMessage);
     messageInput.value = '';
     scrollToBottom();
 
-    // Simulate bot response
-    setTimeout(() => {
-        const botResponse = generateBotResponse(text);
+    // ✅ 올바른 payload
+    const payload = {
+        message: text,
+        sessionId: "itstudio:ck"
+    };
+
+    fetch("https://n8n.itstudio.co.kr/webhook/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Server error");
+        return res.json();
+    })
+    .then(result => {
+        // ✅ n8n 응답 구조에 맞게 접근
+        const botReply = result.reply ?? "응답이 없습니다.";
+
         const botMessage = `
             <div class="message bot-message">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${config.botAvatar}" alt="Bot" class="message-avatar">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${config.botAvatar}"
+                     alt="Bot"
+                     class="message-avatar">
                 <div class="message-content">
                     <span class="message-sender">${config.botName}</span>
                     <div class="message-bubble">
-                        ${botResponse}
+                        ${escapeHtml(botReply).replace(/\n/g, "<br>")}
                     </div>
                 </div>
             </div>
         `;
         messagesContainer.insertAdjacentHTML('beforeend', botMessage);
         scrollToBottom();
-    }, 1000);
+    })
+    .catch(err => {
+        console.error(err);
+        alert("메시지 전송에 실패했습니다.");
+    });
 }
+
+// Send Message
+// function sendMessage() {
+//     const text = messageInput.value.trim();
+//     if (!text) return;
+
+//     const config = departments[currentDepartment];
+//     const now = new Date();
+//     const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+//     // Add user message
+//     const userMessage = `
+//         <div class="message user-message">
+//             <div class="message-content">
+//                 <div class="message-bubble">
+//                     ${escapeHtml(text)}
+//                 </div>
+//                 <span class="message-status">Read ${timeString}</span>
+//             </div>
+//         </div>
+//     `;
+
+//     messagesContainer.insertAdjacentHTML('beforeend', userMessage);
+//     messageInput.value = '';
+//     scrollToBottom();
+//     const message = {"message" : text, "sessionid": "itstudio:ck"}
+
+//     //Simulate bot response
+//     setTimeout(() => {
+//         const botResponse = generateBotResponse(text);
+//         const botMessage = `
+//             <div class="message bot-message">
+//                 <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${config.botAvatar}" alt="Bot" class="message-avatar">
+//                 <div class="message-content">
+//                     <span class="message-sender">${config.botName}</span>
+//                     <div class="message-bubble">
+//                         ${botResponse}
+//                     </div>
+//                 </div>
+//             </div>
+//         `;
+//         messagesContainer.insertAdjacentHTML('beforeend', botMessage);
+//         scrollToBottom();
+//     }, 1000);
+// }
 
 // Send Quick Action
 function sendQuickAction(action) {

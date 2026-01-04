@@ -11,6 +11,8 @@ body {
     color: #e1e8ed;
     overflow: hidden;
     height: 100vh;
+    /* 수정: dvh를 지원하지 않는 브라우저를 위해 vh를 먼저 쓰고 dvh를 씁니다 */
+    height: 100dvh;    
 }
 
 /* Sidebar Styles */
@@ -20,6 +22,7 @@ body {
     top: 0;
     width: 385px;
     height: 100vh;
+    height: 100dvh;
     background-color: #1a1f2e;
     display: flex;
     flex-direction: column;
@@ -138,9 +141,11 @@ body {
 
 /* Department Menu */
 .department-menu {
-    flex: 1;
-    overflow-y: auto;
+    flex: 1; /* 남는 모든 중간 공간을 차지함 */
+    overflow-y: auto; /* 내용이 많으면 이 안에서만 스크롤 */
     padding: 20px 0;
+    /* iOS 등에서 부드러운 스크롤 적용 */
+    -webkit-overflow-scrolling: touch;
 }
 
 .department-menu::-webkit-scrollbar {
@@ -234,6 +239,9 @@ body {
 .bottom-menu {
     padding: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #1a1f2e; /* 배경색 명시 */
+    flex-shrink: 0; /* 중요: 아래로 밀리지 않도록 고정 */
+    margin-bottom: 0; /* 여백 초기화 */
 }
 
 .menu-button {
@@ -264,10 +272,12 @@ body {
 .main-content {
     margin-left: 385px;
     height: 100vh;
+    height: 100dvh; /* 추가 */
     display: flex;
     flex-direction: column;
     background-color: #0f1419;
     transition: margin-left 0.3s ease;
+    position: relative; /* 추가 */
 }
 
 .main-content.expanded {
@@ -513,9 +523,11 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 15px 20px; /* 모바일을 위해 패딩 살짝 조정 */
     padding: 20px 30px;
     background-color: #1a1f2e;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0; /* 중요: 입력창이 찌그러지거나 밀리지 않게 고정 */
 }
 
 .attach-button {
@@ -590,7 +602,8 @@ body {
     .sidebar {
         width: 100%;
         max-width: 385px;
-        transform: translateX(-100%);
+        height: 100vh;
+        height: 100dvh; /* 반드시 dvh 확인 */
     }
 
     .sidebar.open {
@@ -603,6 +616,8 @@ body {
 
     .main-content {
         margin-left: 0;
+        height: 100vh;
+        height: 100dvh;
     }
 
     .menu-toggle {
@@ -610,7 +625,10 @@ body {
     }
 
     .chat-container {
-        padding: 20px 15px;
+        /* padding: 20px 15px; */
+        flex: 1; 
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch; /* iOS 스크롤 부드럽게 */
     }
 
     .message-input-container {
