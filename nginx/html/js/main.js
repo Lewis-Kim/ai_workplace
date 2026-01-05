@@ -311,7 +311,7 @@ function sendMessage() {
         sessionId: "itstudio:ck"
     };
 
-    fetch("https://n8n.itstudio.co.kr/webhook/chat", {
+    fetch("http://localhost:5678/webhook/chat", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
