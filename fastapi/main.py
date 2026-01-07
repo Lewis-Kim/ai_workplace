@@ -6,41 +6,26 @@ from qdrant_client.models import VectorParams, Distance
 
 app = FastAPI()
 
-N8N_CHAT_URL = "http://n8n:5678/webhook/chat"
-
-class ChatRequest(BaseModel):
-    message: str
-    sessionId: str | None = None
-
 @app.post("/chat")
-def chat(req: ChatRequest):
-    payload = {
-        "message": req.message,
-        "sessionId": req.sessionId
-    }
-
+def chat(payload: dict):
+    # n8n 호출
     r = requests.post(
-        N8N_CHAT_URL,
+        "http://n8n:5678/webhook/chat",
         json=payload,
         timeout=30
     )
+    r.raise_for_status()
+    data = r.json()
 
     return {
-        "reply": r.json().get("output", r.json())
+        "reply": data.get("reply", "응답이 없습니다.")
     }
+
 
 @app.get("/api")
 def root():
     return {"message": "FastAPI is running"}
 
-
-@app.post("/call-n8n")
-def call_n8n(payload: dict):
-    r = requests.post(
-        "http://n8n:5678/webhook/test",
-        json=payload
-    )
-    return r.json()
 
 @app.get("/create_vector_store")
 def create():

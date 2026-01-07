@@ -320,7 +320,7 @@ function sendMessage() {
         sessionId: "itstudio:ck"
     };
 
-    fetch("http://localhost:5678/webhook/chat", {
+    fetch("/api/chat", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -352,8 +352,20 @@ function sendMessage() {
         scrollToBottom();
     })
     .catch(err => {
-        console.error(err);
-        alert("메시지 전송에 실패했습니다.");
+        // console.error(err);
+        // alert("메시지 전송에 실패했습니다.");
+        console.error("Chat error:", err);
+        const errorMessage = `
+            <div class="message bot-message error">
+                <div class="message-content">
+                    <div class="message-bubble">
+                        서버와 통신 중 오류가 발생했습니다.
+                    </div>
+                </div>
+            </div>
+        `;
+        messagesContainer.insertAdjacentHTML('beforeend', errorMessage);
+        scrollToBottom();
     });
 }
 
