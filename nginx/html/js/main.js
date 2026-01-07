@@ -421,56 +421,56 @@ function sendQuickAction(action) {
 }
 
 // Generate Bot Response
-function generateBotResponse(userMessage) {
-    const config = departments[currentDepartment];
-    const responses = {
-        'hr': [
-            'I can help you with that! Let me pull up your HR information.',
-            'I\'ll check our HR system and get back to you right away.',
-            'That\'s a great question! Our HR policies state...'
-        ],
-        'finance': [
-            'I\'m checking the financial records for you.',
-            'Let me review your expense report right away.',
-            'I can process that payment request for you!'
-        ],
-        'legal': [
-            'I\'ll review the legal documentation for you.',
-            'That requires a compliance check. Let me verify...',
-            'I can help you with that contract review.'
-        ],
-        'development': [
-            'Let me check the repository for you.',
-            'I\'ll review the deployment logs right away.',
-            'That code issue is in our tracking system. Let me investigate.'
-        ],
-        'it-support': [
-            'I\'m diagnosing the issue for you right now.',
-            'Let me check your system status...',
-            'I can help you troubleshoot that technical issue!'
-        ],
-        'qa': [
-            'I\'ll create a test case for that scenario.',
-            'Let me check the bug tracking system...',
-            'I can help you verify that functionality!'
-        ],
-        'sales': [
-            'Let me check the CRM system for that lead.',
-            'I\'ll pull up the sales pipeline for you.',
-            'Great opportunity! Let me update the deal status.'
-        ],
-        'marketing': [
-            'I\'ll analyze the campaign metrics for you.',
-            'Let me check our content calendar...',
-            'That\'s a great marketing idea! I\'ll make a note of it.'
-        ]
-    };
+// function generateBotResponse(userMessage) {
+//     const config = departments[currentDepartment];
+//     const responses = {
+//         'hr': [
+//             'I can help you with that! Let me pull up your HR information.',
+//             'I\'ll check our HR system and get back to you right away.',
+//             'That\'s a great question! Our HR policies state...'
+//         ],
+//         'finance': [
+//             'I\'m checking the financial records for you.',
+//             'Let me review your expense report right away.',
+//             'I can process that payment request for you!'
+//         ],
+//         'legal': [
+//             'I\'ll review the legal documentation for you.',
+//             'That requires a compliance check. Let me verify...',
+//             'I can help you with that contract review.'
+//         ],
+//         'development': [
+//             'Let me check the repository for you.',
+//             'I\'ll review the deployment logs right away.',
+//             'That code issue is in our tracking system. Let me investigate.'
+//         ],
+//         'it-support': [
+//             'I\'m diagnosing the issue for you right now.',
+//             'Let me check your system status...',
+//             'I can help you troubleshoot that technical issue!'
+//         ],
+//         'qa': [
+//             'I\'ll create a test case for that scenario.',
+//             'Let me check the bug tracking system...',
+//             'I can help you verify that functionality!'
+//         ],
+//         'sales': [
+//             'Let me check the CRM system for that lead.',
+//             'I\'ll pull up the sales pipeline for you.',
+//             'Great opportunity! Let me update the deal status.'
+//         ],
+//         'marketing': [
+//             'I\'ll analyze the campaign metrics for you.',
+//             'Let me check our content calendar...',
+//             'That\'s a great marketing idea! I\'ll make a note of it.'
+//         ]
+//     };
 
-    const deptResponses = responses[currentDepartment] || ['I\'m here to help!'];
-    const randomResponse = deptResponses[Math.floor(Math.random() * deptResponses.length)];
+//     const deptResponses = responses[currentDepartment] || ['I\'m here to help!'];
+//     const randomResponse = deptResponses[Math.floor(Math.random() * deptResponses.length)];
     
-    return randomResponse;
-}
+//     return randomResponse;
+// }
 
 // Handle Search
 function handleSearch(e) {
