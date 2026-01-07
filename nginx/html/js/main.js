@@ -4,89 +4,98 @@ const departments = {
         name: 'HR Team',
         botName: 'HR Assistant',
         botAvatar: 'HRBot',
-        greeting: 'Hello! I\'m the HR Assistant. 👋\nHow can I help you with employee relations, benefits, or HR policies today?',
+        greeting: '안녕하세요! 👋저는 HR 팀의 챗봇입니다.   👋\n직원 관계, 복리후생 또는 인사 정책과 관련하여 어떻게 도와드릴까요?',
         quickActions: [
             { icon: 'fa-calendar', text: 'Leave Request' },
             { icon: 'fa-file-alt', text: 'View Policies' },
             { icon: 'fa-users', text: 'Team Directory' }
-        ]
+        ],
+        botImg: 'http://localhost/img/hr_chatbot.png'
     },
     'finance': {
         name: 'Finance Team',
         botName: 'Finance Bot',
         botAvatar: 'FinanceBot',
-        greeting: 'Hi there! I\'m your Finance Assistant. 💰\nI can help you with expenses, invoices, budget questions, and financial reports.',
+        greeting: '안녕하세요! 저는 재무 담당 비서입니다. 💰\n경비, 송장, 예산 관련 질문, 재무 보고서 작성 등을 도와드릴 수 있습니다.',
         quickActions: [
             { icon: 'fa-receipt', text: 'Submit Expense' },
             { icon: 'fa-file-invoice', text: 'Track Invoice' },
             { icon: 'fa-chart-pie', text: 'Budget Report' }
-        ]
+        ],
+        botImg: 'http://localhost/img/finance_chatbot.png'
     },
     'legal': {
         name: 'Legal Team',
         botName: 'Legal Advisor',
         botAvatar: 'LegalBot',
-        greeting: 'Welcome! I\'m the Legal Advisor Bot. ⚖️\nI can assist you with contracts, compliance questions, and legal documentation.',
+        greeting: '안녕하세요! 저는 법률 자문 봇입니다. ⚖️\n계약, 규정 준수 관련 질문, 법률 문서 작성에 도움을 드릴 수 있습니다.',
         quickActions: [
             { icon: 'fa-file-contract', text: 'Contract Review' },
             { icon: 'fa-shield-alt', text: 'Compliance Check' },
             { icon: 'fa-book', text: 'Legal Resources' }
-        ]
+        ],
+        botImg: 'http://localhost/img/legal_chatbot.png'
     },
     'development': {
         name: 'Development Team',
         botName: 'Dev Bot',
         botAvatar: 'DevBot',
-        greeting: 'Hey Developer! 👨‍💻\nI\'m here to help with code reviews, deployment issues, technical documentation, and development workflows.',
+        greeting: '안녕하세요, 개발자님!  👨‍💻\n코드 리뷰, 배포 문제, 기술 문서 작성, 개발 워크플로우 관련해서 도와드리겠습니다.',
         quickActions: [
             { icon: 'fa-code-branch', text: 'Code Review' },
             { icon: 'fa-rocket', text: 'Deploy Status' },
             { icon: 'fa-book-open', text: 'Documentation' }
-        ]
+        ],
+        botImg: 'http://localhost/img/development_chatbot.png'
     },
     'it-support': {
         name: 'IT Support Team',
         botName: 'Tech Bot',
         botAvatar: 'TechBot',
-        greeting: 'Hello! I\'m the IT Team Manager. 👋\nHow can I assist you with your hardware or software needs today?',
+        greeting: '안녕하세요! 저는 IT 팀 매니저입니다.👋\n하드웨어 또는 소프트웨어 관련해서 어떤 도움을 드릴 수 있을까요??',
         quickActions: [
             { icon: 'fa-wifi', text: 'Connection Issues' },
             { icon: 'fa-key', text: 'Reset Password' },
             { icon: 'fa-download', text: 'Download VPN Client' }
-        ]
+        ],
+        botImg: 'http://localhost/img/tech_chatbot.png'
     },
     'qa': {
         name: 'QA Team',
         botName: 'QA Bot',
         botAvatar: 'QABot',
-        greeting: 'Hi! I\'m your QA Assistant. 🐛\nI can help you with bug reports, test cases, quality standards, and testing procedures.',
+        greeting: '안녕하세요! 저는 QA 어시스턴트입니다.🐛\n버그 보고서, 테스트 케이스, 품질 표준 및 테스트 절차 관련해서 도움을 드릴 수 있습니다.',
         quickActions: [
             { icon: 'fa-bug', text: 'Report Bug' },
             { icon: 'fa-tasks', text: 'Test Cases' },
             { icon: 'fa-clipboard-check', text: 'QA Checklist' }
-        ]
+        ],
+        botImg: 'http://localhost/img/qa_chatbot.png'
     },
     'sales': {
         name: 'Sales Team',
         botName: 'Sales Assistant',
         botAvatar: 'SalesBot',
-        greeting: 'Welcome! I\'m your Sales Assistant. 📈\nI can help with leads, deals, customer information, and sales reports.',
+        greeting: '안녕하세요! 저는 영업 담당 어시스턴트입니다.  📈\n잠재 고객 발굴, 계약 체결, 고객 정보 관리, 판매 보고서 작성 등을 도와드릴 수 있습니다.',
         quickActions: [
             { icon: 'fa-handshake', text: 'New Lead' },
             { icon: 'fa-chart-line', text: 'Sales Pipeline' },
             { icon: 'fa-file-alt', text: 'Generate Report' }
-        ]
+        ],
+        botImg: 'http://localhost/img/sales_chatbot.png'
+
     },
     'marketing': {
         name: 'Marketing Team',
         botName: 'Marketing Bot',
         botAvatar: 'MarketingBot',
-        greeting: 'Hello! I\'m the Marketing Assistant. 📢\nI can assist with campaigns, content creation, analytics, and marketing strategies.',
+        greeting: '안녕하세요! 마케팅 어시스턴트입니다. 📢\n캠페인, 콘텐츠 제작, 분석 및 마케팅 전략 수립을 도와드릴 수 있습니다.',
         quickActions: [
             { icon: 'fa-bullhorn', text: 'Campaign Status' },
             { icon: 'fa-chart-bar', text: 'Analytics' },
             { icon: 'fa-pen', text: 'Content Ideas' }
-        ]
+        ],
+        botImg: 'http://localhost/img/marketing_chatbot.png'
     }
 };
 
@@ -205,7 +214,7 @@ function loadDepartment(dept) {
     // Add bot info
     const botInfo = `
         <div class="bot-info">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${config.botAvatar}" alt="${config.botName}" class="bot-avatar-large">
+            <img src="${config.botImg}" alt="${config.botName}" class="bot-avatar-large">
             <h2 class="bot-name">${config.botName}</h2>
             <div class="bot-status">
                 <span class="status-indicator"></span>
@@ -217,7 +226,7 @@ function loadDepartment(dept) {
     const botInfoContainer = document.querySelector('.bot-info');
     if (botInfoContainer) {
         botInfoContainer.innerHTML = `
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${config.botAvatar}" alt="${config.botName}" class="bot-avatar-large">
+            <img src="${config.botImg}" alt="${config.botName}" class="bot-avatar-large">
             <h2 class="bot-name">${config.botName}</h2>
             <div class="bot-status">
                 <span class="status-indicator"></span>
@@ -233,7 +242,7 @@ function loadDepartment(dept) {
     messagesContainer.innerHTML = `
         <div class="message-date">Today, ${timeString}</div>
         <div class="message bot-message">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${config.botAvatar}" alt="Bot" class="message-avatar">
+            <img src="${config.botImg}" alt="Bot" class="message-avatar">
             <div class="message-content">
                 <span class="message-sender">${config.botName}</span>
                 <div class="message-bubble">
@@ -254,7 +263,7 @@ function loadDepartment(dept) {
 
         const quickActionsMessage = `
             <div class="message bot-message">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${config.botAvatar}" alt="Bot" class="message-avatar">
+                <img src="${config.botImg}" alt="Bot" class="message-avatar">
                 <div class="message-content">
                     <span class="message-sender">${config.botName}</span>
                     <div class="quick-actions">
@@ -311,7 +320,7 @@ function sendMessage() {
         sessionId: "itstudio:ck"
     };
 
-    fetch("https://n8n.itstudio.co.kr/webhook/chat", {
+    fetch("http://localhost:5678/webhook/chat", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -328,7 +337,7 @@ function sendMessage() {
 
         const botMessage = `
             <div class="message bot-message">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${config.botAvatar}"
+                <img src="${config.botImg}"
                      alt="Bot"
                      class="message-avatar">
                 <div class="message-content">
