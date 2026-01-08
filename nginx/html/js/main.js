@@ -383,7 +383,7 @@ function sendMessage() {
                 <div class="message-content">
                     <span class="message-sender">${config.botName}</span>
                     <div class="message-bubble">
-                        ${renderMarkdown(escapeHtml(botReply).replace(/\n/g, "<br>"))}
+                        ${escapeHtml(botReply).replace(/\n/g, "<br>")}
                     </div>
                 </div>
             </div>
