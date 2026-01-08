@@ -6,9 +6,9 @@ const departments = {
         botAvatar: 'HRBot',
         greeting: '안녕하세요! 👋저는 HR 팀의 챗봇입니다.   👋\n직원 관계, 복리후생 또는 인사 정책과 관련하여 어떻게 도와드릴까요?',
         quickActions: [
-            { icon: 'fa-calendar', text: 'Leave Request' },
-            { icon: 'fa-file-alt', text: 'View Policies' },
-            { icon: 'fa-users', text: 'Team Directory' }
+            { icon: 'fa-calendar', text: '인력구성: 매출 성장률, 팔로워 추이, ROI 분석' },
+            { icon: 'fa-file-alt', text: '역량분석: 직무경력, 실무 역량, 전문 분야' },
+            { icon: 'fa-users', text: '근태/관리: 근무 연차, 담당 부서, 연락망 확인' }
         ],
         botImg: '/img/hr_chatbot.png'
     },
@@ -91,16 +91,16 @@ const departments = {
         botAvatar: 'MarketingBot',
         greeting: '안녕하세요! 마케팅 어시스턴트입니다. 📢\n캠페인, 콘텐츠 제작, 분석 및 마케팅 전략 수립을 도와드릴 수 있습니다.',
         quickActions: [
-            { icon: 'fa-bullhorn', text: 'Campaign Status' },
-            { icon: 'fa-chart-bar', text: 'Analytics' },
-            { icon: 'fa-pen', text: 'Content Ideas' }
+            { icon: 'fa-bullhorn', text: '성과 지표: 매출 성장률 , 팔로워 추이 , ROI 분석' },
+            { icon: 'fa-chart-bar', text: '고객 분석: 세대별 비중 , 구매 빈도 , 선호 채널' },
+            { icon: 'fa-pen', text: '전략 실행: 분기별 진도 , 예산 배분 , 온라인 전환Content Ideas' }
         ],
         botImg: '/img/marketing_chatbot.png'
     }
 };
 
 // Current state
-let currentDepartment = 'it-support';
+let currentDepartment = 'marketing';
 
 // DOM Elements
 const sidebar = document.getElementById('sidebar');
@@ -118,7 +118,39 @@ const recentlyItems = document.querySelectorAll('.recently-item');
 // Initialize
 function init() {
     setupEventListeners();
-    loadDepartment('it-support');
+    loadDepartment('marketing');
+}
+
+function selectInitialDepartment() {
+    const defaultDept = "marketing";
+
+    const departmentItems = document.querySelectorAll(".department-item");
+    const departmentTitle = document.getElementById("departmentTitle");
+
+    departmentItems.forEach(item => {
+        const dept = item.dataset.department;
+
+        if (dept === defaultDept) {
+            // active 처리
+            item.classList.add("active");
+
+            // 현재 부서 설정
+            currentDepartment = defaultDept;
+
+            // 헤더 타이틀 변경
+            const name = item.querySelector(".department-name")?.innerText;
+            if (name) {
+                departmentTitle.innerText = name;
+            }
+
+            // 🔥 부서별 recently 로딩 (이미 만들어둔 함수)
+            if (typeof loadRecently === "function") {
+                loadRecently(defaultDept);
+            }
+        } else {
+            item.classList.remove("active");
+        }
+    });
 }
 
 // Setup Event Listeners
@@ -322,6 +354,7 @@ function sendMessage() {
     // ✅ 올바른 payload
     const payload = {
         message: text,
+        department: currentDepartment,
         sessionId: "itstudio:ck"
     };
 
@@ -522,6 +555,8 @@ function renderMarkdown(mdText) {
   return safeHtml;
 }
 
-
 // Initialize on load
 document.addEventListener('DOMContentLoaded', init);
+document.addEventListener("DOMContentLoaded", () => {
+    selectInitialDepartment();
+});

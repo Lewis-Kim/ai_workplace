@@ -2,3 +2,5 @@ fastapi
 uvicorn
 requests
 qdrant-client
+sqlalchemy
+pymysql
