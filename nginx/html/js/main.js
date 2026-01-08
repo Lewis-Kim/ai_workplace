@@ -87,7 +87,7 @@ const departments = {
     },
     'marketing': {
         name: 'Marketing Team',
-        botName: 'Marketing Bot',
+        botName: 'Marketing Assistant',
         botAvatar: 'MarketingBot',
         greeting: '안녕하세요! 마케팅 어시스턴트입니다. 📢\n캠페인, 콘텐츠 제작, 분석 및 마케팅 전략 수립을 도와드릴 수 있습니다.',
         quickActions: [
@@ -315,6 +315,10 @@ function sendMessage() {
     messageInput.value = '';
     scrollToBottom();
 
+    // 2️⃣ typing 표시
+    showTypingIndicator();
+    scrollToBottom();
+
     // ✅ 올바른 payload
     const payload = {
         message: text,
@@ -333,9 +337,11 @@ function sendMessage() {
         return res.json();
     })
     .then(result => {
+        // 4️⃣ typing 제거
+        hideTypingIndicator();
+
         // ✅ n8n 응답 구조에 맞게 접근
         const botReply = result.reply ?? "응답이 없습니다.";
-
         const botMessage = `
             <div class="message bot-message">
                 <img src="${config.botImg}"
@@ -356,6 +362,10 @@ function sendMessage() {
         // console.error(err);
         // alert("메시지 전송에 실패했습니다.");
         console.error("Chat error:", err);
+
+        // 4️⃣ typing 제거
+        hideTypingIndicator();
+
         const errorMessage = `
             <div class="message bot-message error">
                 <div class="message-content">
@@ -454,6 +464,44 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// ===============================
+// Bot Typing Indicator
+// ===============================
+
+function showTypingIndicator() {
+    const messages = document.getElementById('messages');
+
+    // 이미 있으면 중복 생성 방지
+    if (document.getElementById('typingIndicator')) return;
+
+    const typing = document.createElement('div');
+    typing.className = 'message bot-message';
+    typing.id = 'typingIndicator';
+
+    const botImg = departments[currentDepartment].botImg;
+
+    typing.innerHTML = `
+        <img src="${botImg}"
+             class="message-avatar" />
+        <div class="message-content">
+            <span class="message-sender">Tech Bot</span>
+            <div class="typing-indicator">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+            </div>
+        </div>
+    `;
+
+    messages.appendChild(typing);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    const typing = document.getElementById('typingIndicator');
+    if (typing) typing.remove();
 }
 
 // Initialize on load
