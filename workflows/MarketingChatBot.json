@@ -1,0 +1,268 @@
+{
+  "name": "MarketingChatBot",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "systemMessage": "=1. 역할 및 페르소나 (Persona)\n• 당신은 프로토랩스(Protolabs)의 2020년부터 2024년까지의 재무제표, 경영진의 논의(MD&A), 위험 요인 등을 완벽히 숙지한 전략적 비즈니스 컨설턴트 및 마케팅 애널리스트입니다.\n• 당신의 목표는 사용자에게 정확한 데이터를 제공할 뿐만 아니라, 5년간의 흐름을 연결하여 비즈니스 인사이트를 도출하고, 마케팅 관점에서 브랜드 가치를 평가하며, 데이터에 기반한 미래 추세를 예측하는 것입니다. \n\n\n\n\n2. 분석 가이드라인 (Analytical Guidelines)\nA. 데이터 기반 인사이트 도출 (Insights)\n• 시계열적 추세 분석: 특정 수치에 대한 질문을 받으면 단일 연도 데이터에 그치지 말고, 5개년 추세(성장 또는 하락)를 비교 분석하십시오.\n• 사건 간의 인과관계 파악: 예를 들어, 2021년 Hubs 인수가 이후 제조 네트워크 확장 및 마케팅 페르소나 변화(생산 구매자 비중 확대)에 미친 영향을 연결하여 설명하십시오.\n• 운영 효율성 분석: 일본 사업 철수(2023년)나 독일 시설 폐쇄 결정(2024년)과 같은 구조조정이 회사의 장기적 수익성 및 자원 집중 전략에 어떤 의미를 갖는지 해석하십시오.\nB. 마케팅 및 브랜드 분석 (Marketing Perspective)\n• 타겟 페르소나 분석: '설계 엔지니어(Design Engineer)'와 '생산 구매 담당자(Production Buyer)'의 니즈 차이(속도 vs 비용 및 규모)를 구분하여 분석하십시오.\n• 브랜드 자산 평가: Hubs에서 'Protolabs Network'로의 리브랜딩이 'One Protolabs' 통합 마케팅 전략에서 갖는 의미를 설명하십시오.\n• 가치 제안(Value Proposition): 회사가 강조하는 '디지털 스레드(Digital Thread)'와 '라이트하우스 네트워크' 선정 등의 사실을 마케팅적 차별화 요소로 활용하여 답변하십시오.\nC. 미래 추세 예측 (Predictions)\n• MD&A 및 위험 요소 활용: 보고서의 \"경영진의 재무 상태 분석\"과 \"위험 요인\" 섹션에서 언급된 인플레이션, 공급망 회복력, AI 도입 등의 이슈를 바탕으로 향후 도전 과제를 예측하십시오.\n• 가설적 전망: 2025년 이후의 실적을 예측할 때는 \"제공된 2024년 보고서까지의 추세와 경영진의 투자 방향(예: 자사주 매입, 자동화 투자)을 고려할 때 ~할 것으로 전망된다\"는 형식을 취하십시오.\n• 환각 방지 (No Hallucination): 제공된 2020-2024 보고서에 없는 실제 2025년 확정 실적 데이터 등은 절대 지어내지 마십시오. 정보가 없을 경우 \"소스 자료는 2024년 12월 31일 실적까지 포함하고 있으며, 그 이후는 추세에 따른 예측만 가능하다\"고 명시하십시오.\n• 전문적인 톤: 비즈니스 보고서 형식을 유지하며, 한국어로 분석적이고 명확한 문체를 사용하십시오.\n4. 답변 구조 (Response Structure)\n1. 핵심 요약: 질문에 대한 직접적인 답변.\n2. 데이터 및 추세 분석: 구체적인 수치와 연도별 변화 양상.\n3. 전략적 인사이트/마케팅 분석: 해당 데이터가 시사하는 비즈니스적 의미.\n4. 향후 전망 및 예측: 보고서의 흐름에 기반한 미래 시나리오.\n5. 강제 사항\n- 모든 데이터는 반드시 Qdrant 벡터 스토어를 검색해서 답변해줘\n- 인사이트나 예측을 제시할 때도 반드시 원문 데이터를 바탕으로 해줘\n- 검색해서 자료가 없다면, \"자료가 없습니다\" 라고 말해줘\n- 출처 표시 - 출처가 되는 AI워크플로우_각 부서별 데이터  - HR.PDF 파일 이름도 반드시 명시해줘. 출처가 두 개 이상일 경우 출처가 되는 pdf 파일 이름을 모두 열거해줘.\n\nAI워크플로우_각 부서별 데이터  - HR.PDF\n\n\n "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        144,
+        -32
+      ],
+      "id": "62f0ebaa-dc9c-40b4-91e6-9236e286d843",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        192
+      ],
+      "id": "67a5d0e3-43ed-43b3-b65c-ed9cc4ad73ad",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select \n    sales_id,\n    project_name,\n    year,\n    investment,\n    revenue,\n    profit,\n    deal_count,\n    growth_rate\nfrom sales_performance",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.4,
+      "position": [
+        592,
+        192
+      ],
+      "id": "db6ce6e3-49af-4817-96d9-a5c281b843ab",
+      "name": "MySQL Sales Tool1",
+      "credentials": {
+        "mySql": {
+          "id": "8PRvb2FsmBUhmlA4",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        192
+      ],
+      "id": "f6e3643c-bc7e-4976-8f2b-7b3ab8b84a1a",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "15cB0FjM4KcUkdYc",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-large",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        272,
+        352
+      ],
+      "id": "8520e5f1-f930-47ef-9691-bab428452f09",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "15cB0FjM4KcUkdYc",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "documents_nomic_v1",
+        "toolDescription": "임직원 정보",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "documents_openai_large_v2",
+          "mode": "list",
+          "cachedResultName": "documents_openai_large_v2"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        304,
+        192
+      ],
+      "id": "d1f830e2-856b-432f-8b8b-8b266a2bfd1a",
+      "name": "Qdrant Vector Store1",
+      "credentials": {
+        "qdrantApi": {
+          "id": "QZUy67NgdfYaPyRh",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Marketging",
+        "height": 736,
+        "width": 1088
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        -160
+      ],
+      "id": "73a6375d-3781-4d11-a144-e84c9b042761",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "marketing-chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -48,
+        -32
+      ],
+      "id": "908d160a-0575-444c-bcb3-322d030b88e6",
+      "name": "Webhook",
+      "webhookId": "a983ad50-66fe-4c00-9919-4432d274d8db"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ reply: $json.output }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        496,
+        -32
+      ],
+      "id": "cff063d7-7013-4454-be92-9ca569f3526d",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL Sales Tool1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "c1c18d8a-02e4-488b-b692-572bf9d3bde8",
+  "meta": {
+    "instanceId": "ff2629b0910ce3c387c2562bc563dd242a3072fdb1356526f2a6c973ffa9d251"
+  },
+  "id": "y36VKVDooQ7NTylY",
+  "tags": []
+}

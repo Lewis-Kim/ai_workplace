@@ -1,0 +1,262 @@
+{
+  "name": "HRChatBot",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "systemMessage": "너는 매출 분석 전문가야. 사용자가 매출, 수익, 프로젝트 등에 대해 물어보면 'mysql_tool'을 사용하여 답변해줘. 조회된 데이터를 바탕으로 친절하게 요약해서 설명해줘.\n\n모든 대답은 한국어로만 해.\n\n<sales_data_tool>\n- 매출 및 성과 수치가 필요한 경우\n  반드시 \"MySQL Sales Tool\"을 사용하여 조회할 것\n- sales_performance 테이블은 2020~2025년 실제 매출 데이터이다\n- DB 결과에 없는 수치는 절대 추정하거나 생성하지 말 것\n- 전략·보고서의 모든 매출 수치는 DB 결과에 근거해야 한다\n</sales_data_tool>"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        32,
+        48
+      ],
+      "id": "76c98d21-e752-4b13-9e7f-299bceab47cb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        272
+      ],
+      "id": "6f2b2a35-a1fa-4c3b-9581-0a249ccf6c50",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select \n    sales_id,\n    project_name,\n    year,\n    investment,\n    revenue,\n    profit,\n    deal_count,\n    growth_rate\nfrom sales_performance",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySqlTool",
+      "typeVersion": 2.4,
+      "position": [
+        480,
+        272
+      ],
+      "id": "cb19f3b6-62ce-4d16-b38f-2745b06b04d3",
+      "name": "MySQL Sales Tool",
+      "credentials": {
+        "mySql": {
+          "id": "8PRvb2FsmBUhmlA4",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -112,
+        272
+      ],
+      "id": "f413a429-f7e3-4afa-9b71-9d9b36b324c6",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "15cB0FjM4KcUkdYc",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-large",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        432
+      ],
+      "id": "c6adda18-1398-4858-adf9-643d1e2eca81",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "15cB0FjM4KcUkdYc",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "documents_nomic_v1",
+        "toolDescription": "임직원 정보",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "documents_openai_large_v3",
+          "mode": "list",
+          "cachedResultName": "documents_openai_large_v3"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        272
+      ],
+      "id": "e6594457-3dc6-4118-916c-236995d55969",
+      "name": "Qdrant Vector Store",
+      "credentials": {
+        "qdrantApi": {
+          "id": "QZUy67NgdfYaPyRh",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# HR",
+        "height": 736,
+        "width": 1088
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        -112
+      ],
+      "id": "0f5e6938-12ef-46cc-bea4-a738639e2865",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "hr-chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -192,
+        48
+      ],
+      "id": "184544d5-d17d-4196-af45-4abc19259d66",
+      "name": "Webhook",
+      "webhookId": "08f85ff9-ec69-4239-b525-0beb27a8d2cc"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ reply: $json.output }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        384,
+        48
+      ],
+      "id": "9aa4c363-312c-4d8f-b6ba-f8a1beb9bba4",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL Sales Tool": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "e9d21097-2752-43a8-8467-9fb7ac402309",
+  "meta": {
+    "instanceId": "ff2629b0910ce3c387c2562bc563dd242a3072fdb1356526f2a6c973ffa9d251"
+  },
+  "id": "nckwibloMp74YTD7",
+  "tags": []
+}
