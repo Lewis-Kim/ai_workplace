@@ -10,7 +10,7 @@ const departments = {
             { icon: 'fa-file-alt', text: 'View Policies' },
             { icon: 'fa-users', text: 'Team Directory' }
         ],
-        botImg: 'http://localhost/img/hr_chatbot.png'
+        botImg: '/img/hr_chatbot.png'
     },
     'finance': {
         name: 'Finance Team',
@@ -22,7 +22,7 @@ const departments = {
             { icon: 'fa-file-invoice', text: 'Track Invoice' },
             { icon: 'fa-chart-pie', text: 'Budget Report' }
         ],
-        botImg: 'http://localhost/img/finance_chatbot.png'
+        botImg: '/img/finance_chatbot.png'
     },
     'legal': {
         name: 'Legal Team',
@@ -34,7 +34,7 @@ const departments = {
             { icon: 'fa-shield-alt', text: 'Compliance Check' },
             { icon: 'fa-book', text: 'Legal Resources' }
         ],
-        botImg: 'http://localhost/img/legal_chatbot.png'
+        botImg: '/img/legal_chatbot.png'
     },
     'development': {
         name: 'Development Team',
@@ -46,7 +46,7 @@ const departments = {
             { icon: 'fa-rocket', text: 'Deploy Status' },
             { icon: 'fa-book-open', text: 'Documentation' }
         ],
-        botImg: 'http://localhost/img/development_chatbot.png'
+        botImg: '/img/development_chatbot.png'
     },
     'it-support': {
         name: 'IT Support Team',
@@ -58,7 +58,7 @@ const departments = {
             { icon: 'fa-key', text: 'Reset Password' },
             { icon: 'fa-download', text: 'Download VPN Client' }
         ],
-        botImg: 'http://localhost/img/tech_chatbot.png'
+        botImg: '/img/tech_chatbot.png'
     },
     'qa': {
         name: 'QA Team',
@@ -70,7 +70,7 @@ const departments = {
             { icon: 'fa-tasks', text: 'Test Cases' },
             { icon: 'fa-clipboard-check', text: 'QA Checklist' }
         ],
-        botImg: 'http://localhost/img/qa_chatbot.png'
+        botImg: '/img/qa_chatbot.png'
     },
     'sales': {
         name: 'Sales Team',
@@ -82,7 +82,7 @@ const departments = {
             { icon: 'fa-chart-line', text: 'Sales Pipeline' },
             { icon: 'fa-file-alt', text: 'Generate Report' }
         ],
-        botImg: 'http://localhost/img/sales_chatbot.png'
+        botImg: '/img/sales_chatbot.png'
 
     },
     'marketing': {
@@ -95,7 +95,7 @@ const departments = {
             { icon: 'fa-chart-bar', text: 'Analytics' },
             { icon: 'fa-pen', text: 'Content Ideas' }
         ],
-        botImg: 'http://localhost/img/marketing_chatbot.png'
+        botImg: '/img/marketing_chatbot.png'
     }
 };
 
