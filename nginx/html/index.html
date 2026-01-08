@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Department Chatbot System</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?t=20250107-1">
+    <link rel="stylesheet" href="css/style.css?t=20250108-6">
 </head>
 <body>
     <!-- Sidebar -->
@@ -37,67 +37,48 @@
         <nav class="department-menu">
             <!-- Administrative Section -->
             <div class="menu-section">
-                <h4 class="section-title">ADMINISTRATIVE</h4>
+                <h4 class="section-title">DEPARTMENT</h4>
                 <ul class="department-list">
-                    <li class="department-item" data-department="hr">
-                        <i class="fas fa-user department-icon"></i>
-                        <span class="department-name">HR</span>
-                        <i class="fas fa-chevron-right arrow-icon"></i>
-                    </li>
-                    <li class="department-item" data-department="finance">
-                        <i class="fas fa-wallet department-icon"></i>
-                        <span class="department-name">Finance</span>
-                        <i class="fas fa-chevron-right arrow-icon"></i>
-                    </li>
-                    <li class="department-item" data-department="legal">
-                        <i class="fas fa-gavel department-icon"></i>
-                        <span class="department-name">Legal</span>
-                        <i class="fas fa-chevron-right arrow-icon"></i>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Technical Section -->
-            <div class="menu-section">
-                <h4 class="section-title">TECHNICAL</h4>
-                <ul class="department-list">
-                    <li class="department-item" data-department="development">
-                        <i class="fas fa-code department-icon"></i>
-                        <span class="department-name">Development</span>
-                        <!-- <span class="notification-badge"></span> -->
-                        <i class="fas fa-chevron-right arrow-icon"></i>
-                    </li>
-                    <li class="department-item active" data-department="it-support">
-                        <i class="fas fa-laptop department-icon"></i>
-                        <span class="department-name">IT Support</span>
-                        <i class="fas fa-check check-icon"></i>
-                    </li>
-                    <li class="department-item" data-department="qa">
-                        <i class="fas fa-bug department-icon"></i>
-                        <span class="department-name">QA</span>
-                        <i class="fas fa-chevron-right arrow-icon"></i>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Business Section -->
-            <div class="menu-section">
-                <h4 class="section-title">BUSINESS</h4>
-                <ul class="department-list">
-                    <li class="department-item" data-department="sales">
-                        <i class="fas fa-chart-line department-icon"></i>
-                        <span class="department-name">Sales</span>
-                        <i class="fas fa-chevron-right arrow-icon"></i>
-                    </li>
                     <li class="department-item" data-department="marketing">
                         <i class="fas fa-bullhorn department-icon"></i>
                         <span class="department-name">Marketing</span>
                         <i class="fas fa-chevron-right arrow-icon"></i>
                     </li>
+                    <li class="department-item" data-department="sales">
+                        <i class="fas fa-chart-line department-icon"></i>
+                        <span class="department-name">Sales</span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>
+                    <li class="department-item" data-department="hr">
+                        <i class="fas fa-user department-icon"></i>
+                        <span class="department-name">HR</span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Recently -->
+            <div class="menu-section">
+                <h4 class="section-title">RECENTLY</h4>
+                <ul class="recently-list">
+                    <li class="recently-item" data-department="marketing">
+                        <span class="recently-name">2025년 '신규 고객 확보'의 연간 최종 수치와 목표 대비 달성률(%)은 무엇인가요?</span>
+                    </li>
+                    <li class="recently-item" data-department="marketing">
+                        <span class="recently-name">2025년 '옴니채널' 전략의 Q3 진행률과 Q4 진행률의 차이를 계산해 주세요.</span>
+                    </li>
+                    <li class="recently-item" data-department="marketing">
+                        <span class="recently-name">SNS 팔로워가 5,000명을 돌파한 시점은 몇 월이며, 전월 대비 몇 명이 증가했나요?</span>
+                    </li>
+                    <li class="recently-item" data-department="marketing">
+                        <span class="recently-name">2024년 대비 2025년의 '월간 순이익'과 '마진율'은 각각 얼마나 개선되었는지 알려 주세요.</span>
+                    </li>       
+                    <li class="recently-item" data-department="marketing">
+                        <span class="recently-name">2025년 ROI가 높았던 '채널개발' 성과의 연속성을 위해 2021년 이후 입사한 '운영/전략' 경력자 명단을 추출해 주세요.</span>
+                    </li>                                                        
                 </ul>
             </div>
         </nav>
-
         <!-- Bottom Menu -->
         <div class="bottom-menu">
             <button class="menu-button">
@@ -198,6 +179,6 @@
         </div>
     </main>
 
-    <script src="js/main.js?t=20250108-1"></script>
+    <script src="js/main.js?t=20250108-4"></script>
 </body>
 </html>

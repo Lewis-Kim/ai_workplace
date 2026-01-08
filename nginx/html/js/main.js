@@ -113,6 +113,7 @@ const messagesContainer = document.getElementById('messages');
 const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 const searchInput = document.getElementById('searchInput');
+const recentlyItems = document.querySelectorAll('.recently-item');
 
 // Initialize
 function init() {
@@ -369,108 +370,55 @@ function sendMessage() {
     });
 }
 
-// Send Message
-// function sendMessage() {
-//     const text = messageInput.value.trim();
-//     if (!text) return;
-
-//     const config = departments[currentDepartment];
-//     const now = new Date();
-//     const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-
-//     // Add user message
-//     const userMessage = `
-//         <div class="message user-message">
-//             <div class="message-content">
-//                 <div class="message-bubble">
-//                     ${escapeHtml(text)}
-//                 </div>
-//                 <span class="message-status">Read ${timeString}</span>
-//             </div>
-//         </div>
-//     `;
-
-//     messagesContainer.insertAdjacentHTML('beforeend', userMessage);
-//     messageInput.value = '';
-//     scrollToBottom();
-//     const message = {"message" : text, "sessionid": "itstudio:ck"}
-
-//     //Simulate bot response
-//     setTimeout(() => {
-//         const botResponse = generateBotResponse(text);
-//         const botMessage = `
-//             <div class="message bot-message">
-//                 <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${config.botAvatar}" alt="Bot" class="message-avatar">
-//                 <div class="message-content">
-//                     <span class="message-sender">${config.botName}</span>
-//                     <div class="message-bubble">
-//                         ${botResponse}
-//                     </div>
-//                 </div>
-//             </div>
-//         `;
-//         messagesContainer.insertAdjacentHTML('beforeend', botMessage);
-//         scrollToBottom();
-//     }, 1000);
-// }
-
 // Send Quick Action
 function sendQuickAction(action) {
     messageInput.value = action;
     sendMessage();
 }
 
-// Generate Bot Response
-// function generateBotResponse(userMessage) {
-//     const config = departments[currentDepartment];
-//     const responses = {
-//         'hr': [
-//             'I can help you with that! Let me pull up your HR information.',
-//             'I\'ll check our HR system and get back to you right away.',
-//             'That\'s a great question! Our HR policies state...'
-//         ],
-//         'finance': [
-//             'I\'m checking the financial records for you.',
-//             'Let me review your expense report right away.',
-//             'I can process that payment request for you!'
-//         ],
-//         'legal': [
-//             'I\'ll review the legal documentation for you.',
-//             'That requires a compliance check. Let me verify...',
-//             'I can help you with that contract review.'
-//         ],
-//         'development': [
-//             'Let me check the repository for you.',
-//             'I\'ll review the deployment logs right away.',
-//             'That code issue is in our tracking system. Let me investigate.'
-//         ],
-//         'it-support': [
-//             'I\'m diagnosing the issue for you right now.',
-//             'Let me check your system status...',
-//             'I can help you troubleshoot that technical issue!'
-//         ],
-//         'qa': [
-//             'I\'ll create a test case for that scenario.',
-//             'Let me check the bug tracking system...',
-//             'I can help you verify that functionality!'
-//         ],
-//         'sales': [
-//             'Let me check the CRM system for that lead.',
-//             'I\'ll pull up the sales pipeline for you.',
-//             'Great opportunity! Let me update the deal status.'
-//         ],
-//         'marketing': [
-//             'I\'ll analyze the campaign metrics for you.',
-//             'Let me check our content calendar...',
-//             'That\'s a great marketing idea! I\'ll make a note of it.'
-//         ]
-//     };
+// ===============================
+// Department → Recently 연동
+// ===============================
+departmentItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const selectedDept = item.dataset.department;
 
-//     const deptResponses = responses[currentDepartment] || ['I\'m here to help!'];
-//     const randomResponse = deptResponses[Math.floor(Math.random() * deptResponses.length)];
-    
-//     return randomResponse;
-// }
+        // ✅ Department active 처리
+        departmentItems.forEach(d => d.classList.remove('active'));
+        item.classList.add('active');
+
+        // ✅ 상단 타이틀 변경
+        const deptName = item.querySelector('.department-name')?.innerText;
+        if (deptName) {
+            departmentTitle.innerText = deptName;
+        }
+
+        // ✅ Recently 필터링
+        recentlyItems.forEach(recent => {
+            const recentDept = recent.dataset.department;
+
+            if (!recentDept || recentDept === selectedDept) {
+                recent.classList.remove('hidden');
+            } else {
+                recent.classList.add('hidden');
+            }
+        });
+    });
+});
+
+// ===============================
+// Recently → Message Input
+// ===============================
+recentlyItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const text = item.querySelector('.recently-name')?.innerText?.trim();
+        if (!text) return;
+
+        messageInput.value = text;
+        messageInput.focus();
+    });
+});
+
 
 // Handle Search
 function handleSearch(e) {
