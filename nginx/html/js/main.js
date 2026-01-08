@@ -350,7 +350,7 @@ function sendMessage() {
                 <div class="message-content">
                     <span class="message-sender">${config.botName}</span>
                     <div class="message-bubble">
-                        ${escapeHtml(botReply).replace(/\n/g, "<br>")}
+                        ${renderMarkdown(escapeHtml(botReply).replace(/\n/g, "<br>"))}
                     </div>
                 </div>
             </div>
@@ -503,6 +503,25 @@ function hideTypingIndicator() {
     const typing = document.getElementById('typingIndicator');
     if (typing) typing.remove();
 }
+
+// ===============================
+// Markdown Renderer (safe)
+// ===============================
+function renderMarkdown(mdText) {
+  // marked 옵션 (필요하면 커스터마이징)
+  marked.setOptions({
+    breaks: true, // 줄바꿈을 <br>로 반영
+    gfm: true
+  });
+
+  const rawHtml = marked.parse(mdText ?? "");
+
+  // XSS 방지: 허용할 태그/속성 기본 정책은 DOMPurify에 맡김
+  const safeHtml = DOMPurify.sanitize(rawHtml);
+
+  return safeHtml;
+}
+
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', init);
