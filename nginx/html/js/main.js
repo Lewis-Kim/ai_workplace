@@ -114,6 +114,8 @@ const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 const searchInput = document.getElementById('searchInput');
 const recentlyItems = document.querySelectorAll('.recently-item');
+const btnLogout = document.getElementById('btnLogout');
+
 
 // Initialize
 function init() {
@@ -176,6 +178,9 @@ function setupEventListeners() {
         }
     });
 
+    btnLogout.addEventListener('click', logout);
+
+
     // Search functionality
     searchInput.addEventListener('input', handleSearch);
 
@@ -192,6 +197,19 @@ function setupEventListeners() {
 
     // Handle window resize
     window.addEventListener('resize', handleResize);
+}
+
+async function logout() {
+    const res = await fetch("/api/logout", {
+        method: "POST",
+        credentials: "include" // ⭐ 세션 쿠키 필수
+    });
+
+    if (res.ok) {
+        location.href = "/login.html";
+    } else {
+        alert("로그아웃 실패");
+    }
 }
 
 // Toggle Sidebar

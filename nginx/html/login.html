@@ -1,146 +1,148 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="ko"><head>
+<html class="dark" lang="ko">
+<head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Chatbot Login</title>
+
 <!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet"/>
+
 <!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Tailwind Config -->
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#137fec",
-                        "background-light": "#f6f7f8",
-                        "background-dark": "#101922",
-                    },
-                    fontFamily: {
-                        "display": ["Inter", "sans-serif"]
-                    },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-                },
-            },
-        }
-    </script>
-<style>
-        /* Custom scrollbar hide for cleaner mobile look if needed */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#137fec",
+        "background-light": "#f6f7f8",
+        "background-dark": "#101922",
+      },
+      fontFamily: {
+        display: ["Inter", "sans-serif"]
+      }
     }
-  </style>
-  </head>
+  }
+}
+</script>
+</head>
+
 <body class="bg-background-light dark:bg-background-dark font-display antialiased">
-<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
-<!-- Top App Bar (iOS Style) -->
-<div class="sticky top-0 z-10 flex items-center justify-between px-4 py-3 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
-<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
-<span class="material-symbols-outlined text-[#111418] dark:text-white" style="font-size: 24px;">arrow_back_ios_new</span>
-</button>
-<h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] absolute left-1/2 -translate-x-1/2">로그인</h2>
-<div class="w-10"></div> <!-- Spacer for balance -->
+
+<div class="min-h-screen flex items-center justify-center px-4">
+  <div class="w-full max-w-sm bg-white dark:bg-[#161b22] rounded-xl shadow-lg px-6 py-8">
+
+    <!-- Logo -->
+    <div class="flex flex-col items-center mb-6">
+      <div class="w-14 h-14 rounded-xl bg-primary flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-white" style="font-size:28px;">smart_toy</span>
+      </div>
+      <h1 class="text-lg font-bold text-[#111418] dark:text-white">AI Workplace</h1>
+      <p class="text-sm text-[#637588] dark:text-[#9dabb9] mt-1">
+        로그인 후 이용해주세요
+      </p>
+    </div>
+
+    <!-- Form -->
+    <div class="space-y-4">
+
+      <!-- ID -->
+      <div>
+        <label class="block text-xs font-medium text-[#111418] dark:text-white mb-1">
+          아이디
+        </label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9dabb9]" style="font-size:16px;">
+            mail
+          </span>
+          <input
+            id="loginId"
+            type="text"
+            placeholder="아이디 입력"
+            class="w-full h-10 rounded-lg border border-[#dce0e5] dark:border-[#3b4754]
+                   bg-white dark:bg-[#1c2127]
+                   text-sm text-[#111418] dark:text-white
+                   pl-9 pr-3
+                   placeholder:text-[#9dabb9]
+                   focus:ring-2 focus:ring-primary/40 focus:border-primary
+                   transition-all"
+          />
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="block text-xs font-medium text-[#111418] dark:text-white mb-1">
+          비밀번호
+        </label>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9dabb9]" style="font-size:16px;">
+            lock
+          </span>
+          <input
+            id="password"
+            type="password"
+            placeholder="비밀번호 입력"
+            class="w-full h-10 rounded-lg border border-[#dce0e5] dark:border-[#3b4754]
+                   bg-white dark:bg-[#1c2127]
+                   text-sm text-[#111418] dark:text-white
+                   pl-9 pr-9
+                   placeholder:text-[#9dabb9]
+                   focus:ring-2 focus:ring-primary/40 focus:border-primary
+                   transition-all"
+          />
+          <button
+            type="button"
+            class="absolute right-2 top-1/2 -translate-y-1/2 text-[#9dabb9] hover:text-primary">
+            <span class="material-symbols-outlined" style="font-size:18px;">
+              visibility_off
+            </span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Login Button -->
+    <button
+      id="loginBtn"
+      class="mt-6 w-full h-10 rounded-lg bg-primary text-white text-sm font-semibold
+             hover:bg-blue-600 transition-all active:scale-[0.98]">
+      로그인
+    </button>
+
+  </div>
 </div>
-<!-- Main Content Scrollable Area -->
-<div class="flex-1 flex flex-col px-6 pt-6 pb-8">
-<!-- Headline & Logo Area -->
-<div class="flex flex-col items-center mb-8 pt-4">
-<div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-lg mb-6 shadow-primary/20">
-<span class="material-symbols-outlined text-white" style="font-size: 40px;">smart_toy</span>
-</div>
-<h1 class="text-[#111418] dark:text-white text-[28px] font-bold leading-tight text-center mb-2">환영합니다!</h1>
-<p class="text-[#637588] dark:text-[#9dabb9] text-base font-normal leading-normal text-center max-w-[280px]">
-                    AI 챗봇 서비스를 이용하기 위해<br/>로그인해주세요.
-                </p>
-</div>
-<!-- Form Fields -->
-<div class="space-y-5">
-<!-- ID Field -->
-<div class="flex flex-col gap-1.5">
-<label class="text-[#111418] dark:text-white text-sm font-medium leading-normal pl-1">아이디</label>
-<div class="relative flex items-center">
-<span class="material-symbols-outlined absolute left-4 text-[#9dabb9]" style="font-size: 20px;">mail</span>
-<input class="form-input flex w-full rounded-xl border border-[#dce0e5] dark:border-[#3b4754] bg-white dark:bg-[#1c2127] text-[#111418] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 focus:border-primary h-14 placeholder:text-[#9dabb9] pl-11 pr-4 text-base font-normal transition-all" placeholder="이메일 또는 아이디 입력" type="text"/>
-</div>
-</div>
-<!-- Password Field -->
-<div class="flex flex-col gap-1.5">
-<label class="text-[#111418] dark:text-white text-sm font-medium leading-normal pl-1">비밀번호</label>
-<div class="relative flex items-center group">
-<span class="material-symbols-outlined absolute left-4 text-[#9dabb9]" style="font-size: 20px;">lock</span>
-<input class="form-input flex w-full rounded-xl border border-[#dce0e5] dark:border-[#3b4754] bg-white dark:bg-[#1c2127] text-[#111418] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 focus:border-primary h-14 placeholder:text-[#9dabb9] pl-11 pr-12 text-base font-normal transition-all" placeholder="비밀번호 입력" type="password"/>
-<button class="absolute right-0 top-0 h-full px-4 flex items-center justify-center text-[#9dabb9] hover:text-primary transition-colors focus:outline-none">
-<span class="material-symbols-outlined" style="font-size: 24px;">visibility_off</span>
-</button>
-</div>
-</div>
-<!-- Forgot Password Link -->
-<div class="flex justify-end">
-<a class="text-sm font-medium text-[#637588] dark:text-[#9dabb9] hover:text-primary transition-colors" href="#">
-                        비밀번호를 잊으셨나요?
-                    </a>
-</div>
-</div>
-<!-- Action Buttons -->
-<div class="mt-8 flex flex-col gap-4">
-<button class="flex w-full items-center justify-center rounded-xl bg-primary h-14 px-4 text-white text-base font-bold leading-normal hover:bg-blue-600 active:scale-[0.98] transition-all shadow-lg shadow-primary/25">
-                    로그인
-                </button>
-<button class="flex w-full items-center justify-center rounded-xl bg-transparent border border-[#dce0e5] dark:border-[#3b4754] h-14 px-4 text-[#111418] dark:text-white text-base font-medium leading-normal hover:bg-black/5 dark:hover:bg-white/5 transition-all">
-                    회원가입
-                </button>
-</div>
-<!-- Social Login Divider -->
-<div class="relative mt-10 mb-6">
-<div class="absolute inset-0 flex items-center">
-<div class="w-full border-t border-[#dce0e5] dark:border-[#3b4754]"></div>
-</div>
-<div class="relative flex justify-center text-sm">
-<span class="px-4 bg-background-light dark:bg-background-dark text-[#637588] dark:text-[#9dabb9] font-medium">소셜 계정으로 로그인</span>
-</div>
-</div>
-<!-- Social Buttons -->
-<div class="flex gap-4 justify-center">
-<button class="flex items-center justify-center w-14 h-14 rounded-full bg-white dark:bg-[#1c2127] border border-[#dce0e5] dark:border-[#3b4754] hover:bg-gray-50 dark:hover:bg-[#252b32] transition-colors shadow-sm">
-<!-- Google Icon placeholder -->
-<svg class="w-6 h-6" fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M23.52 12.29C23.52 11.43 23.44 10.61 23.3 9.81H12V14.45H18.45C18.17 15.93 17.33 17.18 16.05 18.04V21.02H19.92C22.18 18.94 23.52 15.86 23.52 12.29Z" fill="#4285F4"></path>
-<path d="M12 24C15.24 24 17.96 22.92 19.92 21.02L16.05 18.04C14.97 18.77 13.59 19.2 12 19.2C8.87 19.2 6.22 17.09 5.27 14.24H1.27V17.33C3.25 21.27 7.31 24 12 24Z" fill="#34A853"></path>
-<path d="M5.27 14.24C5.03 13.52 4.9 12.77 4.9 12C4.9 11.23 5.03 10.48 5.27 9.76V6.67H1.27C0.46 8.28 0 10.09 0 12C0 13.91 0.46 15.72 1.27 17.33L5.27 14.24Z" fill="#FBBC05"></path>
-<path d="M12 4.8C13.76 4.8 15.34 5.41 16.58 6.59L20.04 3.13C17.96 1.18 15.24 0 12 0C7.31 0 3.25 2.73 1.27 6.67L5.27 9.76C6.22 6.91 8.87 4.8 12 4.8Z" fill="#EA4335"></path>
-</svg>
-</button>
-<button class="flex items-center justify-center w-14 h-14 rounded-full bg-white dark:bg-[#1c2127] border border-[#dce0e5] dark:border-[#3b4754] hover:bg-gray-50 dark:hover:bg-[#252b32] transition-colors shadow-sm">
-<!-- Apple Icon placeholder -->
-<svg class="w-6 h-6 fill-black dark:fill-white" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.74 1.18 0 2.45-1.03 3.93-.74 1.28.25 2.37.93 2.94 1.77-5.91 3.55-1.12 10.15 1.15 11.2-.5 1.4-1.21 2.76-2.06 3.93-.4.55-.8 1.05-1.04 1.07zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"></path>
-</svg>
-</button>
-<button class="flex items-center justify-center w-14 h-14 rounded-full bg-[#FEE500] border border-[#FEE500] hover:bg-[#FDD835] transition-colors shadow-sm">
-<!-- Kakao Talk Icon placeholder (common in Korea) -->
-<svg class="w-6 h-6 fill-[#3C1E1E]" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 3C6.48 3 2 6.48 2 10.77C2 13.6 3.95 16.07 6.91 17.37L5.85 21.26C5.77 21.57 6.13 21.8 6.39 21.61L10.87 18.54C11.24 18.58 11.62 18.6 12 18.6C17.52 18.6 22 15.12 22 10.83C22 6.54 17.52 3 12 3Z"></path>
-</svg>
-</button>
-</div>
-<div class="mt-8 mb-4 flex justify-center">
-<p class="text-xs text-[#9dabb9] text-center max-w-[200px]">
-                    계속 진행하면 <a class="underline hover:text-primary" href="#">서비스 약관</a> 및 <a class="underline hover:text-primary" href="#">개인정보 처리방침</a>에 동의하게 됩니다.
-                 </p>
-</div>
-</div>
-</div>
-</body></html>
+
+<script>
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const loginId = document.getElementById("loginId").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!loginId || !password) {
+    alert("아이디와 비밀번호를 입력하세요");
+    return;
+  }
+
+  const res = await fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      login_id: loginId,
+      password: password
+    })
+  });
+
+  if (res.ok) {
+    location.href = "/index.html";
+  } else {
+    alert("로그인 실패");
+  }
+});
+</script>
+
+</body>
+</html>

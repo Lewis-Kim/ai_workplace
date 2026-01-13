@@ -14,9 +14,34 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
 
+    <script>
+    (async () => {
+        try {
+            const res = await fetch("/api/me", {
+                credentials: "include"
+            });
 
+            const user = await res.json();
+
+            if (!user) {
+                // ❌ 로그인 안됨 → 로그인 페이지로
+                window.location.href = "/login.html";
+            } else {
+                console.log("로그인 사용자:", user);
+                // ✅ 로그인됨 → 그대로 index.html 사용
+            }
+
+            // ✅ 로그인된 경우에만 화면 표시
+            document.body.style.display = "block";
+
+        } catch (e) {
+            // 네트워크 / 서버 오류 시도 로그인 페이지로
+            window.location.href = "/login.html";
+        }
+    })();
+    </script>
 </head>
-<body>
+<body style="display: none;">
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <!-- Profile Section -->
@@ -104,7 +129,7 @@
                 <i class="fas fa-cog"></i>
                 <span>App Settings</span>
             </button>
-            <button class="menu-button">
+            <button class="menu-button" id="btnLogout">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Log Out</span>
             </button>
@@ -198,6 +223,6 @@
         </div>
     </main>
 
-    <script src="js/main.js?t=20250108-15"></script>
+    <script src="js/main.js?t=20250113-1"></script>
 </body>
 </html>

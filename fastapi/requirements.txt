@@ -1,6 +1,9 @@
 fastapi
 uvicorn
 requests
+itsdangerous
 qdrant-client
 sqlalchemy
 pymysql
+pydantic
+cryptography
