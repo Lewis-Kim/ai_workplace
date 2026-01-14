@@ -30,6 +30,9 @@
                 console.log("로그인 사용자:", user);
                 // ✅ 로그인됨 → 그대로 index.html 사용
             }
+            // ✅ 프로필 영역 채우기
+            document.querySelector(".profile-name").textContent = user.name;
+            document.querySelector(".profile-role").textContent = user.department;
 
             // ✅ 로그인된 경우에만 화면 표시
             document.body.style.display = "block";
