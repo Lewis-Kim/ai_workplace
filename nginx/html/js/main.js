@@ -101,6 +101,7 @@ const departments = {
 
 // Current state
 let currentDepartment = 'marketing';
+let currentSessionId = null;
 
 // DOM Elements
 const sidebar = document.getElementById('sidebar');
@@ -118,9 +119,35 @@ const btnLogout = document.getElementById('btnLogout');
 
 
 // Initialize
-function init() {
+async function init() {
+    await loadSession();
     setupEventListeners();
     loadDepartment('marketing');
+}
+
+async function loadSession() {
+    try {
+        const res = await fetch("/api/me", {
+            credentials: "include"   // ⭐ 세션 쿠키 필수
+        });
+
+        if (!res.ok) throw new Error("Not logged in");
+
+        const user = await res.json();
+
+        if (!user || !user.user_id) {
+            throw new Error("Invalid session");
+        }
+
+        // ✅ 세션 ID 구성 (원하시는 포맷으로 가능)
+        currentSessionId = `user:${user.user_id}`;
+
+        console.log("Session loaded:", currentSessionId);
+    } catch (err) {
+        console.error("Session load failed:", err);
+        // 필요 시 로그인 페이지로 이동
+        // location.href = "/login.html";
+    }
 }
 
 function selectInitialDepartment() {
@@ -373,7 +400,7 @@ function sendMessage() {
     const payload = {
         message: text,
         department: currentDepartment,
-        sessionId: "itstudio:ck"
+        sessionId: currentSessionId
     };
 
     fetch("/api/chat", {
