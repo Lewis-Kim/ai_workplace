@@ -559,12 +559,13 @@ function showTypingIndicator() {
     typing.id = 'typingIndicator';
 
     const botImg = departments[currentDepartment].botImg;
+    const botName = departments[currentDepartment].botName;
 
     typing.innerHTML = `
         <img src="${botImg}"
              class="message-avatar" />
         <div class="message-content">
-            <span class="message-sender">Tech Bot</span>
+            <span class="message-sender">${botName}</span>
             <div class="typing-indicator">
                 <span class="typing-dot"></span>
                 <span class="typing-dot"></span>
