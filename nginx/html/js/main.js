@@ -438,8 +438,12 @@ function sendMessage() {
         hideTypingIndicator();
 
         const errorMessage = `
-            <div class="message bot-message error">
+            <div class="message bot-message">
+                <img src="${config.botImg}"
+                     alt="Bot"
+                     class="message-avatar">
                 <div class="message-content">
+                    <span class="message-sender">${config.botName}</span>
                     <div class="message-bubble">
                         서버와 통신 중 오류가 발생했습니다.
                     </div>
