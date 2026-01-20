@@ -605,45 +605,45 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 음성 녹음 기능
-let mediaRecorder;
-let audioChunks = [];
-recordBtn.onclick = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-            noiseSuppression: true,
-            echoCancellation: true
-        }
-    });
+// let mediaRecorder;
+// let audioChunks = [];
+// recordBtn.onclick = async () => {
+//     const stream = await navigator.mediaDevices.getUserMedia({
+//         audio: {
+//             noiseSuppression: true,
+//             echoCancellation: true
+//         }
+//     });
 
-    mediaRecorder = new MediaRecorder(stream);
-    audioChunks = [];
+//     mediaRecorder = new MediaRecorder(stream);
+//     audioChunks = [];
 
-    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-    mediaRecorder.onstop = sendAudioToServer;
+//     mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+//     mediaRecorder.onstop = sendAudioToServer;
 
-    mediaRecorder.start();
+//     mediaRecorder.start();
 
-    recordBtn.classList.add("recording");
-    recordStatus.innerText = "녹음 중...";
+//     recordBtn.classList.add("recording");
+//     recordStatus.innerText = "녹음 중...";
 
-    setTimeout(() => {
-        mediaRecorder.stop();
-        recordBtn.classList.remove("recording");
-        recordStatus.innerText = "변환 중...";
-    }, 5000);
-};
+//     setTimeout(() => {
+//         mediaRecorder.stop();
+//         recordBtn.classList.remove("recording");
+//         recordStatus.innerText = "변환 중...";
+//     }, 5000);
+// };
 
-async function sendAudioToServer() {
-    const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-    const formData = new FormData();
-    formData.append("file", audioBlob, "voice.webm");
+// async function sendAudioToServer() {
+//     const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+//     const formData = new FormData();
+//     formData.append("file", audioBlob, "voice.webm");
 
-    const res = await fetch("/api/stt", {
-        method: "POST",
-        body: formData
-    });
+//     const res = await fetch("/api/stt", {
+//         method: "POST",
+//         body: formData
+//     });
 
-    const data = await res.json();
-    document.getElementById("messageInput").value = data.text;
-    recordStatus.innerText = "입력 완료";
-}
+//     const data = await res.json();
+//     document.getElementById("messageInput").value = data.text;
+//     recordStatus.innerText = "입력 완료";
+// }
