@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Department Chatbot System</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?t=20250108-8">
+    <link rel="stylesheet" href="css/style.css?t=20250120-1">
     <!-- Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.11/dist/purify.min.js"></script>
@@ -161,10 +161,10 @@
             <div class="bot-info">
                 <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TechBot" alt="Tech Bot" class="bot-avatar-large">
                 <h2 class="bot-name">Tech Bot</h2>
-                <div class="bot-status">
+                <!-- <div class="bot-status">
                     <span class="status-indicator"></span>
                     <span class="status-text">Online • Typically replies instantly</span>
-                </div>
+                </div> -->
             </div>
 
             <!-- Messages -->
@@ -216,9 +216,13 @@
 
         <!-- Message Input -->
         <div class="message-input-container">
-            <button class="attach-button">
+            <!-- <button class="attach-button">
                 <i class="fas fa-plus"></i>
+            </button> -->
+            <button id="recordBtn" class="mic-img-btn">
+                <img src="img/mic2.png" alt="Voice">
             </button>
+            <span id="recordStatus" class="record-status"></span>g
             <input type="text" class="message-input" id="messageInput" placeholder="Type a message...">
             <button class="send-button" id="sendButton">
                 <i class="fas fa-paper-plane"></i>
@@ -226,6 +230,6 @@
         </div>
     </main>
 
-    <script src="js/main.js?t=20250120-2"></script>
+    <script src="js/main.js?t=20250120-4"></script>
 </body>
 </html>

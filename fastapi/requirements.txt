@@ -7,3 +7,5 @@ sqlalchemy
 pymysql
 pydantic
 cryptography
+faster-whisper
+python-multipart

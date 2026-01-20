@@ -1,6 +1,9 @@
 import requests
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, UploadFile, File
 from schemas.chat import ChatRequest
+from faster_whisper import WhisperModel
+import tempfile
+import shutil
 
 # router = APIRouter(prefix="/api", tags=["Chat"])
 router = APIRouter(tags=["Chat"])
@@ -10,6 +13,26 @@ N8N_WEBHOOKS = {
     "sales": "http://n8n:5678/webhook/sales-chat",
     "hr": "http://n8n:5678/webhook/hr-chat",
 }
+
+model = WhisperModel("small", device="cpu", compute_type="int8")
+
+@router.post("/stt")
+async def speech_to_text(file: UploadFile = File(...)):
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as temp:
+        shutil.copyfileobj(file.file, temp)
+        temp_path = temp.name
+
+    segments, info = model.transcribe(temp_path, language="ko")
+
+    text = ""
+    for segment in segments:
+        text += segment.text + " "
+
+    return {
+        "text": text.strip(),
+        "language": info.language
+    }
+
 
 @router.post("/chat")
 def chat(req: ChatRequest):

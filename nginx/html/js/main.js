@@ -116,7 +116,8 @@ const sendButton = document.getElementById('sendButton');
 const searchInput = document.getElementById('searchInput');
 const recentlyItems = document.querySelectorAll('.recently-item');
 const btnLogout = document.getElementById('btnLogout');
-
+const recordBtn = document.getElementById("recordBtn");
+const recordStatus = document.getElementById("recordStatus");
 
 // Initialize
 async function init() {
@@ -294,10 +295,6 @@ function loadDepartment(dept) {
         <div class="bot-info">
             <img src="${config.botImg}" alt="${config.botName}" class="bot-avatar-large">
             <h2 class="bot-name">${config.botName}</h2>
-            <div class="bot-status">
-                <span class="status-indicator"></span>
-                <span class="status-text">Online • Typically replies instantly</span>
-            </div>
         </div>
     `;
 
@@ -306,10 +303,6 @@ function loadDepartment(dept) {
         botInfoContainer.innerHTML = `
             <img src="${config.botImg}" alt="${config.botName}" class="bot-avatar-large">
             <h2 class="bot-name">${config.botName}</h2>
-            <div class="bot-status">
-                <span class="status-indicator"></span>
-                <span class="status-text">Online • Typically replies instantly</span>
-            </div>
         `;
     }
 
@@ -606,3 +599,47 @@ document.addEventListener('DOMContentLoaded', init);
 document.addEventListener("DOMContentLoaded", () => {
     selectInitialDepartment();
 });
+
+// 음성 녹음 기능
+let mediaRecorder;
+let audioChunks = [];
+recordBtn.onclick = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+            noiseSuppression: true,
+            echoCancellation: true
+        }
+    });
+
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    mediaRecorder.onstop = sendAudioToServer;
+
+    mediaRecorder.start();
+
+    recordBtn.classList.add("recording");
+    recordStatus.innerText = "녹음 중...";
+
+    setTimeout(() => {
+        mediaRecorder.stop();
+        recordBtn.classList.remove("recording");
+        recordStatus.innerText = "변환 중...";
+    }, 5000);
+};
+
+async function sendAudioToServer() {
+    const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+    const formData = new FormData();
+    formData.append("file", audioBlob, "voice.webm");
+
+    const res = await fetch("/api/stt", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+    document.getElementById("messageInput").value = data.text;
+    recordStatus.innerText = "입력 완료";
+}
