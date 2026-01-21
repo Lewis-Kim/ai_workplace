@@ -1,0 +1,1 @@
+docker exec -it n8n_project3 n8n user-management:reset
