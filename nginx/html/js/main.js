@@ -290,6 +290,18 @@ function loadDepartment(dept) {
     // Clear messages
     messagesContainer.innerHTML = '';
 
+    // ✅ Recently 필터링
+    recentlyItems.forEach(recent => {
+        const recentDept = recent.dataset.department;
+
+        if (!recentDept || recentDept === dept) {
+            recent.classList.remove('hidden');
+        } else {
+            recent.classList.add('hidden');
+        }
+    });
+
+
     // Add bot info
     const botInfo = `
         <div class="bot-info">
