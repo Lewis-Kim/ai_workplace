@@ -99,20 +99,17 @@ const departments = {
     },
     'sangsang': {
         name: 'SangSang Story',
-        botName: 'SangSang Story Assistant',
+        botName: '상상스토리 어시스턴트',
         botAvatar: 'SangSangBot',
-        greeting: '안녕하세요! 👋저는 상상스토리의 챗봇입니다.   👋\n직원 관계, 복리후생 또는 인사 정책과 관련하여 어떻게 도와드릴까요?',
+        greeting: '안녕하세요! 👋저는 상상스토리 어시스턴트입니다.   👋\n사내문서를 수집하여 답변드리고 있습니다. 무엇이 궁금하신가요?',
         quickActions: [
-            { icon: 'fa-calendar', text: '인력구성: 매출 성장률, 팔로워 추이, ROI 분석' },
-            { icon: 'fa-file-alt', text: '역량분석: 직무경력, 실무 역량, 전문 분야' },
-            { icon: 'fa-users', text: '근태/관리: 근무 연차, 담당 부서, 연락망 확인' }
         ],
-        botImg: '/img/qa_chatbot.png'
+        botImg: '/img/tech_chatbot.png'
     },
 };
 
 // Current state
-let currentDepartment = 'marketing';
+let currentDepartment = 'sangsang';
 let currentSessionId = null;
 let currentUserId = null;
 
@@ -137,7 +134,7 @@ async function init() {
     await loadSession();
     setupEventListeners();
     selectInitialDepartment(); // ⭐ 먼저 UI+채팅 초기화
-    loadRecentlyByDept("marketing"); // ⭐ 명시적으로 marketing
+    loadRecentlyByDept("sangsang"); // ⭐ 명시적으로 marketing
 }
 
 
@@ -171,7 +168,7 @@ async function loadSession() {
 }
 
 function selectInitialDepartment() {
-    const defaultDept = "marketing";
+    const defaultDept = "sangsang";
 
     departmentItems.forEach(item => {
         const dept = item.dataset.department;

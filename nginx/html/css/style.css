@@ -842,3 +842,16 @@ body {
 .mic-img-btn.recording {
     background-color: #1d9bf0;
 }
+
+.company-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 10px 8px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.company-logo img {
+    max-width: 140px;
+    height: auto;
+}
