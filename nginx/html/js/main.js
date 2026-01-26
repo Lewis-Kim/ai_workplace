@@ -108,555 +108,301 @@ const departments = {
     },
 };
 
-// Current state
+// ============================
+// Global State
+// ============================
 let currentDepartment = 'sangsang';
 let currentSessionId = null;
 let currentUserId = null;
+let recentlyCache = [];
 
-// DOM Elements
-const sidebar = document.getElementById('sidebar');
-const menuToggle = document.getElementById('menuToggle');
-const closeSidebar = document.getElementById('closeSidebar');
-const mainContent = document.querySelector('.main-content');
-const departmentTitle = document.getElementById('departmentTitle');
-const departmentItems = document.querySelectorAll('.department-item');
-const messagesContainer = document.getElementById('messages');
-const messageInput = document.getElementById('messageInput');
-const sendButton = document.getElementById('sendButton');
-const searchInput = document.getElementById('searchInput');
-// const recentlyItems = document.querySelectorAll('.recently-item');
-const btnLogout = document.getElementById('btnLogout');
-const recordBtn = document.getElementById("recordBtn");
-const recordStatus = document.getElementById("recordStatus");
-
-// Initialize
-async function init() {
+// ============================
+// Init
+// ============================
+$(document).ready(async function () {
     await loadSession();
     setupEventListeners();
-    selectInitialDepartment(); // ⭐ 먼저 UI+채팅 초기화
-    loadRecentlyByDept("sangsang"); // ⭐ 명시적으로 marketing
-}
+    selectDepartment(currentDepartment);
+    loadRecentlyByDept(currentDepartment);
+});
 
-
+// ============================
+// Session
+// ============================
 async function loadSession() {
     try {
-        const res = await fetch("/api/me", {
-            credentials: "include"   // ⭐ 세션 쿠키 필수
-        });
-
+        const res = await fetch("/api/me", { credentials: "include" });
         if (!res.ok) throw new Error("Not logged in");
 
         const user = await res.json();
-
-        if (!user || !user.user_id) {
-            throw new Error("Invalid session");
-        }
-
-        // ✅ 세션 ID 구성 (원하시는 포맷으로 가능)
         currentSessionId = `user:${user.login_id}`;
         currentUserId = user.login_id;
-
-        console.log("Session loaded:", currentSessionId);
-
-        document.body.style.display = "block";
-
+        $("body").show();
     } catch (err) {
         console.error("Session load failed:", err);
-        // 필요 시 로그인 페이지로 이동
-        // location.href = "/login.html";
     }
 }
 
-function selectInitialDepartment() {
-    const defaultDept = "sangsang";
-
-    departmentItems.forEach(item => {
-        const dept = item.dataset.department;
-
-        if (dept === defaultDept) {
-            item.classList.add("active");
-            currentDepartment = defaultDept;
-
-            const name = item.querySelector(".department-name")?.innerText;
-            if (name) {
-                departmentTitle.innerText = name;
-            }
-
-            // 🔥 실제 부서 로딩 추가
-            loadDepartment(defaultDept);
-        } else {
-            item.classList.remove("active");
-        }
-    });
-}
-
-// Setup Event Listeners
+// ============================
+// Events
+// ============================
 function setupEventListeners() {
-    // Sidebar toggle
-    menuToggle.addEventListener('click', toggleSidebar);
-    closeSidebar.addEventListener('click', toggleSidebar);
 
-    // Department selection
-    departmentItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const dept = item.getAttribute('data-department');
-            selectDepartment(dept);
-        });
+    $("#menuToggle, #closeSidebar").on("click", toggleSidebar);
+
+    $(".department-item").on("click", function () {
+        const dept = $(this).data("department");
+        selectDepartment(dept);
     });
 
-    // Message sending
-    sendButton.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
+    $("#sendButton").on("click", sendMessage);
+
+    $("#messageInput").on("keypress", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
         }
     });
 
-    btnLogout.addEventListener('click', logout);
+    $("#btnLogout").on("click", logout);
 
+    $("#searchInput").on("input", handleSearch);
 
-    // Search functionality
-    searchInput.addEventListener('input', handleSearch);
+    $(window).on("resize", handleResize);
 
-    // Close sidebar on outside click (mobile)
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768) {
-            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-                if (!sidebar.classList.contains('closed')) {
-                    toggleSidebar();
-                }
+    $(document).on("click", function (e) {
+        if ($(window).width() <= 768) {
+            if (!$("#sidebar").has(e.target).length && !$("#menuToggle").is(e.target)) {
+                $("#sidebar").addClass("closed");
             }
         }
     });
-
-    // Handle window resize
-    window.addEventListener('resize', handleResize);
 }
 
-async function logout() {
-    const res = await fetch("/api/logout", {
-        method: "POST",
-        credentials: "include" // ⭐ 세션 쿠키 필수
-    });
-
-    if (res.ok) {
-        location.href = "/login.html";
-    } else {
-        alert("로그아웃 실패");
-    }
-}
-
-// Toggle Sidebar
+// ============================
+// UI Control
+// ============================
 function toggleSidebar() {
-    if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('closed');
-    } else {
-        sidebar.classList.toggle('closed');
-        mainContent.classList.toggle('expanded');
+    $("#sidebar").toggleClass("closed");
+    $(".main-content").toggleClass("expanded");
+}
+
+function handleResize() {
+    if ($(window).width() > 768) {
+        $("#sidebar").removeClass("closed");
+        $(".main-content").removeClass("expanded");
     }
 }
 
-// Select Department
+// ============================
+// Department
+// ============================
 function selectDepartment(dept) {
     if (!departments[dept]) return;
     currentDepartment = dept;
 
-    // ⭐ active UI 처리
-    departmentItems.forEach(item => {
-        item.classList.remove("active");
-        if (item.dataset.department === dept) {
-            item.classList.add("active");
-        }
-    });
+    $(".department-item").removeClass("active");
+    $(`.department-item[data-department="${dept}"]`).addClass("active");
 
     loadDepartment(dept);
     loadRecentlyByDept(dept);
 }
 
-// Load Department Chat
+function updateBotInfo(config) {
+    const botInfoHtml = `
+        <img src="${config.botImg}" alt="${config.botName}" class="bot-avatar-large">
+        <h2 class="bot-name">${config.botName}</h2>
+    `;
+    $(".bot-info").html(botInfoHtml);
+}
+
 function loadDepartment(dept) {
     const config = departments[dept];
-    if (!config) return;
 
-    // Update header
-    departmentTitle.textContent = config.name;
+    // 🔥 Bot Info 상단 변경
+    updateBotInfo(config);
 
-    // Clear messages
-    messagesContainer.innerHTML = '';
+    $("#departmentTitle").text(config.name);
+    $("#messages").empty();
 
-    // ✅ Recently 필터링
-    // recentlyItems.forEach(recent => {
-    //     const recentDept = recent.dataset.department;
+    const time = new Date().toLocaleTimeString("en-US", { hour: 'numeric', minute: '2-digit' });
 
-    //     if (!recentDept || recentDept === dept) {
-    //         recent.classList.remove('hidden');
-    //     } else {
-    //         recent.classList.add('hidden');
-    //     }
-    // });
-
-
-    // Add bot info
-    const botInfo = `
-        <div class="bot-info">
-            <img src="${config.botImg}" alt="${config.botName}" class="bot-avatar-large">
-            <h2 class="bot-name">${config.botName}</h2>
-        </div>
-    `;
-
-    const botInfoContainer = document.querySelector('.bot-info');
-    if (botInfoContainer) {
-        botInfoContainer.innerHTML = `
-            <img src="${config.botImg}" alt="${config.botName}" class="bot-avatar-large">
-            <h2 class="bot-name">${config.botName}</h2>
-        `;
-    }
-
-    // Add initial message
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-    
-    messagesContainer.innerHTML = `
-        <div class="message-date">Today, ${timeString}</div>
+    $("#messages").append(`
+        <div class="message-date">Today, ${time}</div>
         <div class="message bot-message">
-            <img src="${config.botImg}" alt="Bot" class="message-avatar">
+            <img src="${config.botImg}" class="message-avatar">
             <div class="message-content">
                 <span class="message-sender">${config.botName}</span>
-                <div class="message-bubble">
-                    ${config.greeting.replace(/\n/g, '<br>')}
-                </div>
+                <div class="message-bubble">${config.greeting.replace(/\n/g, "<br>")}</div>
             </div>
         </div>
-    `;
+    `);
 
-    // Add quick actions if available
-    if (config.quickActions && config.quickActions.length > 0) {
-        const quickActionsHtml = config.quickActions.map(action => 
-            `<button class="quick-action-btn" data-action="${action.text}">
-                <i class="fas ${action.icon}"></i>
-                ${action.text}
-            </button>`
-        ).join('');
-
-        const quickActionsMessage = `
-            <div class="message bot-message">
-                <img src="${config.botImg}" alt="Bot" class="message-avatar">
-                <div class="message-content">
-                    <span class="message-sender">${config.botName}</span>
-                    <div class="quick-actions">
-                        ${quickActionsHtml}
-                    </div>
-                </div>
-            </div>
-        `;
-
-        messagesContainer.insertAdjacentHTML('beforeend', quickActionsMessage);
-
-        // Add click handlers to quick action buttons
-        document.querySelectorAll('.quick-action-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const action = btn.getAttribute('data-action');
-                sendQuickAction(action);
-            });
-        });
-    }
-
-    // Scroll to bottom
+    renderQuickActions(config);
     scrollToBottom();
 }
 
+function renderQuickActions(config) {
+    if (!config.quickActions.length) return;
+
+    const html = config.quickActions.map(action => `
+        <button class="quick-action-btn" data-action="${action.text}">
+            <i class="fas ${action.icon}"></i>${action.text}
+        </button>
+    `).join("");
+
+    $("#messages").append(`
+        <div class="message bot-message">
+            <img src="${config.botImg}" class="message-avatar">
+            <div class="quick-actions">${html}</div>
+        </div>
+    `);
+
+    $(".quick-action-btn").on("click", function () {
+        sendQuickAction($(this).data("action"));
+    });
+}
+
+// ============================
+// Messaging
+// ============================
 function sendMessage() {
-    const text = messageInput.value.trim();
+    const text = $("#messageInput").val().trim();
     if (!text) return;
 
-    const config = departments[currentDepartment];
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit'
-    });
+    const time = new Date().toLocaleTimeString("en-US", { hour: 'numeric', minute: '2-digit' });
 
-    // 사용자 메시지 출력
-    const userMessage = `
+    $("#messages").append(`
         <div class="message user-message">
             <div class="message-content">
-                <div class="message-bubble">
-                    ${escapeHtml(text)}
-                </div>
-                <span class="message-status">Read ${timeString}</span>
+                <div class="message-bubble">${escapeHtml(text)}</div>
+                <span class="message-status">Read ${time}</span>
             </div>
         </div>
-    `;
-    messagesContainer.insertAdjacentHTML('beforeend', userMessage);
-    messageInput.value = '';
-    scrollToBottom();
+    `);
 
-    // 2️⃣ typing 표시
+    $("#messageInput").val("");
+    scrollToBottom();
     showTypingIndicator();
-    scrollToBottom();
-
-    // ✅ 올바른 payload
-    const payload = {
-        session_id: currentSessionId,
-        user_id: currentUserId,
-        department: currentDepartment,
-        message: text
-    };
 
     fetch("/api/chat", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            session_id: currentSessionId,
+            user_id: currentUserId,
+            department: currentDepartment,
+            message: text
+        })
     })
-    .then(res => {
-        if (!res.ok) throw new Error("Server error");
-        return res.json();
-    })
+    .then(res => res.json())
     .then(result => {
-        // 4️⃣ typing 제거
         hideTypingIndicator();
-
-        // ✅ n8n 응답 구조에 맞게 접근
-        const botReply = result.reply ?? "응답이 없습니다.";
-        const botMessage = `
-            <div class="message bot-message">
-                <img src="${config.botImg}"
-                     alt="Bot"
-                     class="message-avatar">
-                <div class="message-content">
-                    <span class="message-sender">${config.botName}</span>
-                    <div class="message-bubble">
-                        ${escapeHtml(botReply).replace(/\n/g, "<br>")}
-                    </div>
-                </div>
-            </div>
-        `;
-        messagesContainer.insertAdjacentHTML('beforeend', botMessage);
-        scrollToBottom();
+        appendBotMessage(result.reply || "응답이 없습니다.");
     })
-    .catch(err => {
-        // console.error(err);
-        // alert("메시지 전송에 실패했습니다.");
-        console.error("Chat error:", err);
-
-        // 4️⃣ typing 제거
+    .catch(() => {
         hideTypingIndicator();
-
-        const errorMessage = `
-            <div class="message bot-message">
-                <img src="${config.botImg}"
-                     alt="Bot"
-                     class="message-avatar">
-                <div class="message-content">
-                    <span class="message-sender">${config.botName}</span>
-                    <div class="message-bubble">
-                        서버와 통신 중 오류가 발생했습니다.
-                    </div>
-                </div>
-            </div>
-        `;
-        messagesContainer.insertAdjacentHTML('beforeend', errorMessage);
-        scrollToBottom();
+        appendBotMessage("서버 오류가 발생했습니다.");
     });
 }
 
-// Send Quick Action
+function appendBotMessage(text) {
+    const config = departments[currentDepartment];
+    $("#messages").append(`
+        <div class="message bot-message">
+            <img src="${config.botImg}" class="message-avatar">
+            <div class="message-content">
+                <span class="message-sender">${config.botName}</span>
+                <div class="message-bubble">${escapeHtml(text).replace(/\n/g, "<br>")}</div>
+            </div>
+        </div>
+    `);
+    scrollToBottom();
+}
+
 function sendQuickAction(action) {
-    messageInput.value = action;
+    $("#messageInput").val(action);
     sendMessage();
 }
 
-// Handle Search
-function handleSearch(e) {
-    const query = e.target.value.toLowerCase();
-    
-    departmentItems.forEach(item => {
-        const name = item.querySelector('.department-name').textContent.toLowerCase();
-        if (name.includes(query)) {
-            item.style.display = 'flex';
-        } else {
-            item.style.display = 'none';
-        }
+// ============================
+// Recently
+// ============================
+async function loadRecentlyByDept(dept) {
+    if (!currentUserId) return;
+    const res = await fetch(`/api/recent?user_id=${currentUserId}&department=${dept}&limit=5`);
+    const data = await res.json();
+    recentlyCache[dept] = data;
+    renderRecently(dept);
+}
+
+function renderRecently(dept) {
+    const list = $("#recently-list").empty();
+    (recentlyCache[dept] || []).forEach(item => {
+        const li = $(`<li class="recently-item"><span class="recently-name">${item.question}</span></li>`);
+        li.on("click", () => {
+            $("#messageInput").val(item.question);
+            sendMessage();
+        });
+        list.append(li);
     });
 }
 
-// Handle Window Resize
-function handleResize() {
-    if (window.innerWidth > 768) {
-        sidebar.classList.remove('closed');
-        mainContent.classList.remove('expanded');
-    } else {
-        sidebar.classList.add('closed');
-    }
+// ============================
+// Search
+// ============================
+function handleSearch() {
+    const q = $("#searchInput").val().toLowerCase();
+    $(".department-item").each(function () {
+        const name = $(this).find(".department-name").text().toLowerCase();
+        $(this).toggle(name.includes(q));
+    });
 }
 
-// Utility Functions
+// ============================
+// Utils
+// ============================
 function scrollToBottom() {
-    const chatContainer = document.getElementById('chatContainer');
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    const chat = $("#chatContainer")[0];
+    chat.scrollTop = chat.scrollHeight;
 }
 
 function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+    return $("<div>").text(text).html();
 }
 
-// ===============================
-// Bot Typing Indicator
-// ===============================
-
+// ============================
+// Typing Indicator
+// ============================
 function showTypingIndicator() {
-    const messages = document.getElementById('messages');
+    if ($("#typingIndicator").length) return;
 
-    // 이미 있으면 중복 생성 방지
-    if (document.getElementById('typingIndicator')) return;
+    const config = departments[currentDepartment];
 
-    const typing = document.createElement('div');
-    typing.className = 'message bot-message';
-    typing.id = 'typingIndicator';
-
-    const botImg = departments[currentDepartment].botImg;
-    const botName = departments[currentDepartment].botName;
-
-    typing.innerHTML = `
-        <img src="${botImg}"
-             class="message-avatar" />
-        <div class="message-content">
-            <span class="message-sender">${botName}</span>
+    $("#messages").append(`
+        <div id="typingIndicator" class="message bot-message">
+            <img src="${config.botImg}" class="message-avatar">
             <div class="typing-indicator">
                 <span class="typing-dot"></span>
                 <span class="typing-dot"></span>
                 <span class="typing-dot"></span>
             </div>
         </div>
-    `;
+    `);
 
-    messages.appendChild(typing);
-    messages.scrollTop = messages.scrollHeight;
+    scrollToBottom();
 }
+
 
 function hideTypingIndicator() {
-    const typing = document.getElementById('typingIndicator');
-    if (typing) typing.remove();
+    $("#typingIndicator").remove();
 }
 
-let recentlyCache = []; // 🔥 전체 최근 질문 캐시
-
-// async function loadRecently() {
-//     const userId = sessionStorage.getItem("user_id");
-//     if (!userId) return;
-
-//     const res = await fetch(`/api/recent?user_id=${userId}&limit=5`);
-//     const data = await res.json();
-//     recentlyCache = data;
-// }
-
-async function loadRecentlyByDept(dept) {
-    // const userId = sessionStorage.getItem("user_id");
-    // if (!userId || !dept) return;
-    if (!currentUserId || !dept) {
-        console.warn("userId or dept missing", currentUserId, dept);
-        return;
-    }
-
-    const res = await fetch(`/api/recent?user_id=${currentUserId}&department=${dept}&limit=5`);
-    const data = await res.json();
-
-    recentlyCache[dept] = data;
-    renderRecently(dept);
-}
-
-function renderRecently(dept) {
-    const list = document.getElementById("recently-list");
-    list.innerHTML = "";
-
-    const items = recentlyCache[dept] || [];
-
-    items.forEach(item => {
-        const li = document.createElement("li");
-        li.className = "recently-item";
-
-        const span = document.createElement("span");
-        span.className = "recently-name";
-        span.textContent = item.question;
-
-        li.appendChild(span);
-
-        li.addEventListener("click", () => {
-            messageInput.value = item.question;
-            sendMessage();
-        });
-
-        list.appendChild(li);
-    });
-}
-
-
-// ===============================
-// Markdown Renderer (safe)
-// ===============================
-function renderMarkdown(mdText) {
-  // marked 옵션 (필요하면 커스터마이징)
-  marked.setOptions({
-    breaks: true, // 줄바꿈을 <br>로 반영
-    gfm: true
-  });
-
-  const rawHtml = marked.parse(mdText ?? "");
-
-  // XSS 방지: 허용할 태그/속성 기본 정책은 DOMPurify에 맡김
-  const safeHtml = DOMPurify.sanitize(rawHtml);
-
-  return safeHtml;
-}
-
-// Initialize on load
-document.addEventListener('DOMContentLoaded', init);
-
-// 음성 녹음 기능
-let mediaRecorder;
-let audioChunks = [];
-recordBtn.onclick = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-            noiseSuppression: true,
-            echoCancellation: true
-        }
-    });
-
-    mediaRecorder = new MediaRecorder(stream);
-    audioChunks = [];
-
-    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-    mediaRecorder.onstop = sendAudioToServer;
-
-    mediaRecorder.start();
-
-    recordBtn.classList.add("recording");
-    recordStatus.innerText = "녹음 중...";
-
-    setTimeout(() => {
-        mediaRecorder.stop();
-        recordBtn.classList.remove("recording");
-        recordStatus.innerText = "변환 중...";
-    }, 5000);
-};
-
-async function sendAudioToServer() {
-    const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-    const formData = new FormData();
-    formData.append("file", audioBlob, "voice.webm");
-
-    const res = await fetch("/api/stt", {
-        method: "POST",
-        body: formData
-    });
-
-    const data = await res.json();
-    document.getElementById("messageInput").value = data.text;
-    recordStatus.innerText = "입력 완료";
+// ============================
+// Logout
+// ============================
+async function logout() {
+    const res = await fetch("/api/logout", { method: "POST", credentials: "include" });
+    if (res.ok) location.href = "/login.html";
+    else alert("로그아웃 실패");
 }
