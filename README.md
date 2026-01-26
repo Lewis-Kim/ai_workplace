@@ -120,3 +120,33 @@ cmd /c .\export-workflows.bat
 - 관리콘솔 : http://localhost:6333/dashboard#/collections
 
 테스트
+
+
+## MySql Table 생성
+회원 테이블
+```sql
+CREATE TABLE `users` (
+  `user_id` bigint NOT NULL AUTO_INCREMENT,
+  `login_id` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `department` varchar(30) DEFAULT NULL,
+  `role` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `login_id` (`login_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+조회 히스토리 테이블
+```sql
+CREATE TABLE tracking_history (
+    seq_no BIGINT AUTO_INCREMENT PRIMARY KEY,
+    courier_cd int not null,
+    tracking_no VARCHAR(50) NOT NULL,
+    stat_cd VARCHAR(50) NOT NULL,
+    stat_nm NVARCHAR(255) NOT NULL,
+	tracking_dt DATETIME
+);
+
+```

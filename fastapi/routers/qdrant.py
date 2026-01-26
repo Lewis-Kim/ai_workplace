@@ -12,3 +12,13 @@ def create_vector_store():
         vectors_config=VectorParams(size=768, distance=Distance.COSINE)
     )
     return {"message": "create success!"}
+
+
+@router.get("/create_vector_store_sangsang")
+def create_vector_store():
+    client = QdrantClient(host="qdrant", port=6333)
+    client.create_collection(
+        collection_name="document_sangsang_story",
+        vectors_config=VectorParams(size=1536, distance=Distance.COSINE)
+    )
+    return {"message": "create success!"}

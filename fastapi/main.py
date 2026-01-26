@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from models import Base
+from db import engine
 from starlette.middleware.sessions import SessionMiddleware
+
 
 # from routers import auth, chat, health, qdrant
 from routers.auth import router as auth_router

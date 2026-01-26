@@ -96,12 +96,25 @@ const departments = {
             { icon: 'fa-pen', text: '전략 실행: 분기별 진도 , 예산 배분 , 온라인 전환Content Ideas' }
         ],
         botImg: '/img/marketing_chatbot.png'
-    }
+    },
+    'sangsang': {
+        name: 'SangSang Story',
+        botName: 'SangSang Story Assistant',
+        botAvatar: 'SangSangBot',
+        greeting: '안녕하세요! 👋저는 상상스토리의 챗봇입니다.   👋\n직원 관계, 복리후생 또는 인사 정책과 관련하여 어떻게 도와드릴까요?',
+        quickActions: [
+            { icon: 'fa-calendar', text: '인력구성: 매출 성장률, 팔로워 추이, ROI 분석' },
+            { icon: 'fa-file-alt', text: '역량분석: 직무경력, 실무 역량, 전문 분야' },
+            { icon: 'fa-users', text: '근태/관리: 근무 연차, 담당 부서, 연락망 확인' }
+        ],
+        botImg: '/img/qa_chatbot.png'
+    },
 };
 
 // Current state
 let currentDepartment = 'marketing';
 let currentSessionId = null;
+let currentUserId = null;
 
 // DOM Elements
 const sidebar = document.getElementById('sidebar');
@@ -114,7 +127,7 @@ const messagesContainer = document.getElementById('messages');
 const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 const searchInput = document.getElementById('searchInput');
-const recentlyItems = document.querySelectorAll('.recently-item');
+// const recentlyItems = document.querySelectorAll('.recently-item');
 const btnLogout = document.getElementById('btnLogout');
 const recordBtn = document.getElementById("recordBtn");
 const recordStatus = document.getElementById("recordStatus");
@@ -123,8 +136,10 @@ const recordStatus = document.getElementById("recordStatus");
 async function init() {
     await loadSession();
     setupEventListeners();
-    loadDepartment('marketing');
+    selectInitialDepartment(); // ⭐ 먼저 UI+채팅 초기화
+    loadRecentlyByDept("marketing"); // ⭐ 명시적으로 marketing
 }
+
 
 async function loadSession() {
     try {
@@ -141,9 +156,13 @@ async function loadSession() {
         }
 
         // ✅ 세션 ID 구성 (원하시는 포맷으로 가능)
-        currentSessionId = `user:${user.user_id}`;
+        currentSessionId = `user:${user.login_id}`;
+        currentUserId = user.login_id;
 
         console.log("Session loaded:", currentSessionId);
+
+        document.body.style.display = "block";
+
     } catch (err) {
         console.error("Session load failed:", err);
         // 필요 시 로그인 페이지로 이동
@@ -154,29 +173,20 @@ async function loadSession() {
 function selectInitialDepartment() {
     const defaultDept = "marketing";
 
-    const departmentItems = document.querySelectorAll(".department-item");
-    const departmentTitle = document.getElementById("departmentTitle");
-
     departmentItems.forEach(item => {
         const dept = item.dataset.department;
 
         if (dept === defaultDept) {
-            // active 처리
             item.classList.add("active");
-
-            // 현재 부서 설정
             currentDepartment = defaultDept;
 
-            // 헤더 타이틀 변경
             const name = item.querySelector(".department-name")?.innerText;
             if (name) {
                 departmentTitle.innerText = name;
             }
 
-            // 🔥 부서별 recently 로딩 (이미 만들어둔 함수)
-            if (typeof loadRecently === "function") {
-                loadRecently(defaultDept);
-            }
+            // 🔥 실제 부서 로딩 추가
+            loadDepartment(defaultDept);
         } else {
             item.classList.remove("active");
         }
@@ -253,30 +263,18 @@ function toggleSidebar() {
 // Select Department
 function selectDepartment(dept) {
     if (!departments[dept]) return;
-
     currentDepartment = dept;
 
-    // Update active state
+    // ⭐ active UI 처리
     departmentItems.forEach(item => {
-        item.classList.remove('active');
-        const arrow = item.querySelector('.arrow-icon, .check-icon');
-        if (arrow) {
-            if (item.getAttribute('data-department') === dept) {
-                item.classList.add('active');
-                arrow.className = 'fas fa-check check-icon';
-            } else {
-                arrow.className = 'fas fa-chevron-right arrow-icon';
-            }
+        item.classList.remove("active");
+        if (item.dataset.department === dept) {
+            item.classList.add("active");
         }
     });
 
-    // Load department chat
     loadDepartment(dept);
-
-    // Close sidebar on mobile
-    if (window.innerWidth <= 768) {
-        toggleSidebar();
-    }
+    loadRecentlyByDept(dept);
 }
 
 // Load Department Chat
@@ -291,15 +289,15 @@ function loadDepartment(dept) {
     messagesContainer.innerHTML = '';
 
     // ✅ Recently 필터링
-    recentlyItems.forEach(recent => {
-        const recentDept = recent.dataset.department;
+    // recentlyItems.forEach(recent => {
+    //     const recentDept = recent.dataset.department;
 
-        if (!recentDept || recentDept === dept) {
-            recent.classList.remove('hidden');
-        } else {
-            recent.classList.add('hidden');
-        }
-    });
+    //     if (!recentDept || recentDept === dept) {
+    //         recent.classList.remove('hidden');
+    //     } else {
+    //         recent.classList.add('hidden');
+    //     }
+    // });
 
 
     // Add bot info
@@ -403,9 +401,10 @@ function sendMessage() {
 
     // ✅ 올바른 payload
     const payload = {
-        message: text,
+        session_id: currentSessionId,
+        user_id: currentUserId,
         department: currentDepartment,
-        sessionId: currentSessionId
+        message: text
     };
 
     fetch("/api/chat", {
@@ -472,50 +471,6 @@ function sendQuickAction(action) {
     messageInput.value = action;
     sendMessage();
 }
-
-// ===============================
-// Department → Recently 연동
-// ===============================
-departmentItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const selectedDept = item.dataset.department;
-
-        // ✅ Department active 처리
-        departmentItems.forEach(d => d.classList.remove('active'));
-        item.classList.add('active');
-
-        // ✅ 상단 타이틀 변경
-        const deptName = item.querySelector('.department-name')?.innerText;
-        if (deptName) {
-            departmentTitle.innerText = deptName;
-        }
-
-        // ✅ Recently 필터링
-        recentlyItems.forEach(recent => {
-            const recentDept = recent.dataset.department;
-
-            if (!recentDept || recentDept === selectedDept) {
-                recent.classList.remove('hidden');
-            } else {
-                recent.classList.add('hidden');
-            }
-        });
-    });
-});
-
-// ===============================
-// Recently → Message Input
-// ===============================
-recentlyItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const text = item.querySelector('.recently-name')?.innerText?.trim();
-        if (!text) return;
-
-        messageInput.value = text;
-        messageInput.focus();
-    });
-});
-
 
 // Handle Search
 function handleSearch(e) {
@@ -592,6 +547,58 @@ function hideTypingIndicator() {
     if (typing) typing.remove();
 }
 
+let recentlyCache = []; // 🔥 전체 최근 질문 캐시
+
+// async function loadRecently() {
+//     const userId = sessionStorage.getItem("user_id");
+//     if (!userId) return;
+
+//     const res = await fetch(`/api/recent?user_id=${userId}&limit=5`);
+//     const data = await res.json();
+//     recentlyCache = data;
+// }
+
+async function loadRecentlyByDept(dept) {
+    // const userId = sessionStorage.getItem("user_id");
+    // if (!userId || !dept) return;
+    if (!currentUserId || !dept) {
+        console.warn("userId or dept missing", currentUserId, dept);
+        return;
+    }
+
+    const res = await fetch(`/api/recent?user_id=${currentUserId}&department=${dept}&limit=5`);
+    const data = await res.json();
+
+    recentlyCache[dept] = data;
+    renderRecently(dept);
+}
+
+function renderRecently(dept) {
+    const list = document.getElementById("recently-list");
+    list.innerHTML = "";
+
+    const items = recentlyCache[dept] || [];
+
+    items.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "recently-item";
+
+        const span = document.createElement("span");
+        span.className = "recently-name";
+        span.textContent = item.question;
+
+        li.appendChild(span);
+
+        li.addEventListener("click", () => {
+            messageInput.value = item.question;
+            sendMessage();
+        });
+
+        list.appendChild(li);
+    });
+}
+
+
 // ===============================
 // Markdown Renderer (safe)
 // ===============================
@@ -612,50 +619,47 @@ function renderMarkdown(mdText) {
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', init);
-document.addEventListener("DOMContentLoaded", () => {
-    selectInitialDepartment();
-});
 
 // 음성 녹음 기능
-// let mediaRecorder;
-// let audioChunks = [];
-// recordBtn.onclick = async () => {
-//     const stream = await navigator.mediaDevices.getUserMedia({
-//         audio: {
-//             noiseSuppression: true,
-//             echoCancellation: true
-//         }
-//     });
+let mediaRecorder;
+let audioChunks = [];
+recordBtn.onclick = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+            noiseSuppression: true,
+            echoCancellation: true
+        }
+    });
 
-//     mediaRecorder = new MediaRecorder(stream);
-//     audioChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
 
-//     mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-//     mediaRecorder.onstop = sendAudioToServer;
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+    mediaRecorder.onstop = sendAudioToServer;
 
-//     mediaRecorder.start();
+    mediaRecorder.start();
 
-//     recordBtn.classList.add("recording");
-//     recordStatus.innerText = "녹음 중...";
+    recordBtn.classList.add("recording");
+    recordStatus.innerText = "녹음 중...";
 
-//     setTimeout(() => {
-//         mediaRecorder.stop();
-//         recordBtn.classList.remove("recording");
-//         recordStatus.innerText = "변환 중...";
-//     }, 5000);
-// };
+    setTimeout(() => {
+        mediaRecorder.stop();
+        recordBtn.classList.remove("recording");
+        recordStatus.innerText = "변환 중...";
+    }, 5000);
+};
 
-// async function sendAudioToServer() {
-//     const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-//     const formData = new FormData();
-//     formData.append("file", audioBlob, "voice.webm");
+async function sendAudioToServer() {
+    const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+    const formData = new FormData();
+    formData.append("file", audioBlob, "voice.webm");
 
-//     const res = await fetch("/api/stt", {
-//         method: "POST",
-//         body: formData
-//     });
+    const res = await fetch("/api/stt", {
+        method: "POST",
+        body: formData
+    });
 
-//     const data = await res.json();
-//     document.getElementById("messageInput").value = data.text;
-//     recordStatus.innerText = "입력 완료";
-// }
+    const data = await res.json();
+    document.getElementById("messageInput").value = data.text;
+    recordStatus.innerText = "입력 완료";
+}

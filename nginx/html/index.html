@@ -13,36 +13,6 @@
     <!-- (선택) 코드 하이라이트 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
-
-    <script>
-    (async () => {
-        try {
-            const res = await fetch("/api/me", {
-                credentials: "include"
-            });
-
-            const user = await res.json();
-
-            if (!user) {
-                // ❌ 로그인 안됨 → 로그인 페이지로
-                window.location.href = "/login.html";
-            } else {
-                console.log("로그인 사용자:", user);
-                // ✅ 로그인됨 → 그대로 index.html 사용
-            }
-            // ✅ 프로필 영역 채우기
-            document.querySelector(".profile-name").textContent = user.name;
-            document.querySelector(".profile-role").textContent = user.department;
-
-            // ✅ 로그인된 경우에만 화면 표시
-            document.body.style.display = "block";
-
-        } catch (e) {
-            // 네트워크 / 서버 오류 시도 로그인 페이지로
-            window.location.href = "/login.html";
-        }
-    })();
-    </script>
 </head>
 <body style="display: none;">
     <!-- Sidebar -->
@@ -91,38 +61,26 @@
                         <span class="department-name">HR</span>
                         <i class="fas fa-chevron-right arrow-icon"></i>
                     </li>
+                    <li class="department-item" data-department="sangsang">
+                        <i class="fas fa-user department-icon"></i>
+                        <span class="department-name">SangSang Story</span>
+                        <i class="fas fa-chevron-right arrow-icon"></i>
+                    </li>                    
                 </ul>
             </div>
 
             <!-- Recently -->
             <div class="menu-section">
                 <h4 class="section-title">RECENTLY</h4>
-                <ul class="recently-list">
-                    <li class="recently-item" data-department="marketing">
-                        <span class="recently-name">2025년 '신규 고객 확보'의 연간 최종 수치와 목표 대비 달성률(%)은 무엇인가요?</span>
-                    </li>
-                    <li class="recently-item" data-department="marketing">
-                        <span class="recently-name">2025년 '옴니채널' 전략의 Q3 진행률과 Q4 진행률의 차이를 계산해 주세요.</span>
-                    </li>
-                    <li class="recently-item" data-department="marketing">
-                        <span class="recently-name">SNS 팔로워가 5,000명을 돌파한 시점은 몇 월이며, 전월 대비 몇 명이 증가했나요?</span>
-                    </li>
-                    <li class="recently-item" data-department="marketing">
-                        <span class="recently-name">2024년 대비 2025년의 '월간 순이익'과 '마진율'은 각각 얼마나 개선되었는지 알려 주세요.</span>
-                    </li>       
-                    <li class="recently-item" data-department="sales">
-                        <span class="recently-name">2025년 ROI가 높았던 '채널개발' 성과의 연속성을 위해 2021년 이후 입사한 '운영/전략' 경력자 명단을 추출해 주세요.</span>
-                    </li>    
-                    <li class="recently-item" data-department="hr">
-                        <span class="recently-name">2026년 마케팅팀 인원 증원(2명→4명) 계획에 따라, 타 부서에서 '마케팅' 경력을 보유한 대리~과장급 적임자를 추천해 주세요.</span>
-                    </li>      
-                    <li class="recently-item" data-department="hr">
-                        <span class="recently-name">'영업팀'에서 '운영' 경력을 가진 사원과 대리급 인원은 누구이며, 그들의 입사일은 언제인가요?</span>
-                    </li>      
-                    <li class="recently-item" data-department="hr">
-                        <span class="recently-name">2021년에서 2023년 사이에 입사한 직원 중 '마케팅' 경력을 가진 사람들의 이름과 소속 부서를 리스트업해 주세요.</span>
-                    </li>      
-
+                <ul class="recently-list" id="recently-list">
+                    <!-- <li class="recently-item" data-department="marketing"> <span class="recently-name">2025년 '신규 고객 확보'의 연간 최종 수치와 목표 대비 달성률(%)은 무엇인가요?</span> </li> 
+                    <li class="recently-item" data-department="marketing"> <span class="recently-name">2025년 '옴니채널' 전략의 Q3 진행률과 Q4 진행률의 차이를 계산해 주세요.</span> </li> 
+                    <li class="recently-item" data-department="marketing"> <span class="recently-name">SNS 팔로워가 5,000명을 돌파한 시점은 몇 월이며, 전월 대비 몇 명이 증가했나요?</span> </li> 
+                    <li class="recently-item" data-department="marketing"> <span class="recently-name">2024년 대비 2025년의 '월간 순이익'과 '마진율'은 각각 얼마나 개선되었는지 알려 주세요.</span> </li> 
+                    <li class="recently-item" data-department="sales"> <span class="recently-name">2025년 ROI가 높았던 '채널개발' 성과의 연속성을 위해 2021년 이후 입사한 '운영/전략' 경력자 명단을 추출해 주세요.</span> </li> 
+                    <li class="recently-item" data-department="hr"> <span class="recently-name">2026년 마케팅팀 인원 증원(2명→4명) 계획에 따라, 타 부서에서 '마케팅' 경력을 보유한 대리~과장급 적임자를 추천해 주세요.</span> </li> 
+                    <li class="recently-item" data-department="hr"> <span class="recently-name">'영업팀'에서 '운영' 경력을 가진 사원과 대리급 인원은 누구이며, 그들의 입사일은 언제인가요?</span> </li> 
+                    <li class="recently-item" data-department="hr"> <span class="recently-name">2021년에서 2023년 사이에 입사한 직원 중 '마케팅' 경력을 가진 사람들의 이름과 소속 부서를 리스트업해 주세요.</span> </li> -->
                 </ul>
             </div>
         </nav>
@@ -216,13 +174,13 @@
 
         <!-- Message Input -->
         <div class="message-input-container">
-            <button class="attach-button">
+            <!-- <button class="attach-button">
                 <i class="fas fa-plus"></i>
-            </button>
-            <!-- <button id="recordBtn" class="mic-img-btn">
-                <img src="img/mic2.png" alt="Voice">
             </button> -->
-            <!-- <span id="recordStatus" class="record-status"></span> -->
+            <button id="recordBtn" class="mic-img-btn">
+                <img src="img/mic2.png" alt="Voice">
+            </button>
+            <span id="recordStatus" class="record-status"></span>
             <input type="text" class="message-input" id="messageInput" placeholder="Type a message...">
             <button class="send-button" id="sendButton">
                 <i class="fas fa-paper-plane"></i>
@@ -230,6 +188,6 @@
         </div>
     </main>
 
-    <script src="js/main.js?t=20250121-2"></script>
+    <script src="js/main.js?t=20250123-1"></script>
 </body>
 </html>
