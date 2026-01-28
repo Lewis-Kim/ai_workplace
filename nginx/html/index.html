@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Department Chatbot System</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?t=20250126-1">
+    <link rel="stylesheet" href="css/style.css?t=20250128-1">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -53,22 +53,22 @@
                 <ul class="department-list">
                     <li class="department-item" data-department="marketing">
                         <i class="fas fa-bullhorn department-icon"></i>
-                        <span class="department-name">Marketing</span>
+                        <span class="department-name">마케팅</span>
                         <i class="fas fa-chevron-right arrow-icon"></i>
                     </li>
                     <li class="department-item" data-department="sales">
                         <i class="fas fa-chart-line department-icon"></i>
-                        <span class="department-name">Sales</span>
+                        <span class="department-name">영업</span>
                         <i class="fas fa-chevron-right arrow-icon"></i>
                     </li>
                     <li class="department-item" data-department="hr">
                         <i class="fas fa-user department-icon"></i>
-                        <span class="department-name">HR</span>
+                        <span class="department-name">인사</span>
                         <i class="fas fa-chevron-right arrow-icon"></i>
                     </li>
                     <li class="department-item" data-department="sangsang">
-                        <i class="fas fa-user department-icon"></i>
-                        <span class="department-name">상상스토리 어시스턴트</span>
+                        <i class="fas fa-folder department-icon"></i>
+                        <span class="department-name">문서검색</span>
                         <i class="fas fa-chevron-right arrow-icon"></i>
                     </li>                    
                 </ul>
@@ -179,13 +179,15 @@
 
         <!-- Message Input -->
         <div class="message-input-container">
-            <!-- <button class="attach-button">
+            <button class="attach-button" id="uploadBtn">
                 <i class="fas fa-plus"></i>
-            </button> -->
-            <button id="recordBtn" class="mic-img-btn">
+            </button>
+            <!-- 숨김 파일 선택 -->
+            <input type="file" id="pdfUpload" accept="application/pdf" style="display:none" />
+            <!-- <button id="recordBtn" class="mic-img-btn">
                 <img src="img/mic2.png" alt="Voice">
             </button>
-            <span id="recordStatus" class="record-status"></span>
+            <span id="recordStatus" class="record-status"></span> -->
             <input type="text" class="message-input" id="messageInput" placeholder="Type a message...">
             <button class="send-button" id="sendButton">
                 <i class="fas fa-paper-plane"></i>

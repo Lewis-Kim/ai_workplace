@@ -135,6 +135,12 @@ async function loadSession() {
         if (!res.ok) throw new Error("Not logged in");
 
         const user = await res.json();
+        // 👇 여기 중요: null 체크
+        if (!user || !user.login_id) {
+            window.location.href = "/login.html";
+            return;
+        }
+
         currentSessionId = `user:${user.login_id}`;
         currentUserId = user.login_id;
         $("body").show();
@@ -405,4 +411,62 @@ async function logout() {
     const res = await fetch("/api/logout", { method: "POST", credentials: "include" });
     if (res.ok) location.href = "/login.html";
     else alert("로그아웃 실패");
+}
+
+// ===============================
+// PDF Upload (LangChain RAG)
+// ===============================
+
+$("#uploadBtn").on("click", function () {
+    $("#pdfUpload").click();
+});
+
+$("#pdfUpload").on("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    if (!file.name.toLowerCase().endsWith(".pdf")) {
+        alert("PDF 파일만 업로드 가능합니다.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // 사용자에게 업로드 중 표시
+    appendSystemMessage(`📄 ${file.name} 업로드 중...`);
+
+    fetch("/api/upload/pdf", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Upload failed");
+        return res.json();
+    })
+    .then(data => {
+        appendSystemMessage(`✅ ${file.name} 업로드 완료 (${data.chunks} chunks)`);
+    })
+    .catch(err => {
+        console.error(err);
+        appendSystemMessage(`❌ ${file.name} 업로드 실패`);
+    })
+    .finally(() => {
+        $("#pdfUpload").val(""); // 초기화
+    });
+});
+
+function appendSystemMessage(text) {
+    const msg = `
+        <div class="message bot-message">
+            <div class="message-content">
+                <span class="message-sender">System</span>
+                <div class="message-bubble">
+                    ${text}
+                </div>
+            </div>
+        </div>
+    `;
+    $("#messages").append(msg);
+    scrollToBottom();
 }

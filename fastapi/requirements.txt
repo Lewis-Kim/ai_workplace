@@ -9,3 +9,9 @@ pydantic
 cryptography
 faster-whisper
 python-multipart
+langchain
+langchain-community
+langchain-openai
+langchain-qdrant
+pymupdf
+pdfplumber

@@ -18,7 +18,7 @@ def create_vector_store():
 def create_vector_store():
     client = QdrantClient(host="qdrant", port=6333)
     client.create_collection(
-        collection_name="document_sangsang_story",
-        vectors_config=VectorParams(size=1536, distance=Distance.COSINE)
+        collection_name="sangsang_story_documents_openai_large_v2",
+        vectors_config=VectorParams(size=3072, distance=Distance.COSINE)
     )
     return {"message": "create success!"}
