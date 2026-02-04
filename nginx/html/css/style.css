@@ -7,12 +7,12 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    background-color: #0f1419;
-    color: #e1e8ed;
+    background-color: #f5f7fa;
+    color: #1a202c;
     overflow: hidden;
     height: 100vh;
     /* 수정: dvh를 지원하지 않는 브라우저를 위해 vh를 먼저 쓰고 dvh를 씁니다 */
-    height: 100dvh;    
+    height: 100dvh;
 }
 
 /* Sidebar Styles */
@@ -23,12 +23,12 @@ body {
     width: 385px;
     height: 100vh;
     height: 100dvh;
-    background-color: #1a1f2e;
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
     z-index: 1000;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .sidebar.closed {
@@ -38,7 +38,7 @@ body {
 /* Profile Section */
 .profile-section {
     padding: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .profile-header {
@@ -59,7 +59,7 @@ body {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: #2d3748;
+    background-color: #e2e8f0;
 }
 
 .profile-details {
@@ -71,12 +71,12 @@ body {
 .profile-name {
     font-size: 16px;
     font-weight: 600;
-    color: #ffffff;
+    color: #1a202c;
 }
 
 .profile-role {
     font-size: 13px;
-    color: #8899a6;
+    color: #718096;
 }
 
 .online-indicator {
@@ -87,13 +87,13 @@ body {
     height: 12px;
     background-color: #00ba7c;
     border-radius: 50%;
-    border: 2px solid #1a1f2e;
+    border: 2px solid #ffffff;
 }
 
 .close-sidebar {
     background: none;
     border: none;
-    color: #8899a6;
+    color: #718096;
     font-size: 20px;
     cursor: pointer;
     padding: 5px;
@@ -101,7 +101,7 @@ body {
 }
 
 .close-sidebar:hover {
-    color: #ffffff;
+    color: #1a202c;
 }
 
 /* Search Container */
@@ -114,29 +114,29 @@ body {
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: #8899a6;
+    color: #a0aec0;
     font-size: 14px;
 }
 
 .search-input {
     width: 100%;
     padding: 12px 15px 12px 45px;
-    background-color: #252d3d;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #f0f2f5;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 8px;
-    color: #e1e8ed;
+    color: #1a202c;
     font-size: 14px;
     outline: none;
     transition: all 0.2s;
 }
 
 .search-input::placeholder {
-    color: #8899a6;
+    color: #a0aec0;
 }
 
 .search-input:focus {
-    background-color: #2d3748;
-    border-color: rgba(29, 161, 242, 0.3);
+    background-color: #ffffff;
+    border-color: rgba(49, 130, 206, 0.4);
 }
 
 /* Department Menu */
@@ -157,7 +157,7 @@ body {
 }
 
 .department-menu::-webkit-scrollbar-thumb {
-    background: #2d3748;
+    background: #cbd5e0;
     border-radius: 3px;
 }
 
@@ -168,7 +168,7 @@ body {
 .section-title {
     font-size: 11px;
     font-weight: 600;
-    color: #657786;
+    color: #718096;
     letter-spacing: 1px;
     padding: 0 20px;
     margin-bottom: 10px;
@@ -190,7 +190,7 @@ body {
     flex: 1;
     font-size: 15px;
     font-weight: 500;
-    color: #e1e8ed;
+    color: #2d3748;
 }
 .recently-item {
     display: flex;
@@ -202,7 +202,7 @@ body {
 }
 
 .recently-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(0, 0, 0, 0.04);
 }
 
 /* 앞에 - 표시 */
@@ -210,7 +210,7 @@ body {
     content: "-";
     position: absolute;
     left: 20px;                 /* 들여쓰기 기준 위치 */
-    color: #657786;
+    color: #a0aec0;
     font-size: 13px;
     line-height: 1;
 }
@@ -221,7 +221,7 @@ body {
     min-width: 0;               /* ⭐ ellipsis 필수 */
     font-size: 13px;
     font-weight: 400;
-    color: #cfd9e0;
+    color: #4a5568;
 
     white-space: nowrap;
     overflow: hidden;
@@ -248,21 +248,21 @@ body {
 }
 
 .department-item:hover {
-    background-color: rgba(29, 161, 242, 0.1);
+    background-color: rgba(49, 130, 206, 0.08);
 }
 
 .department-item.active {
-    background-color: #1d9bf0;
+    background-color: #3182ce;
 }
 
 .department-item.active:hover {
-    background-color: #1a8cd8;
+    background-color: #2b6cb0;
 }
 
 .department-icon {
     width: 20px;
     font-size: 16px;
-    color: #8899a6;
+    color: #718096;
 }
 
 .department-item.active .department-icon,
@@ -274,12 +274,12 @@ body {
     flex: 1;
     font-size: 15px;
     font-weight: 500;
-    color: #e1e8ed;
+    color: #2d3748;
 }
 
 .arrow-icon {
     font-size: 12px;
-    color: #657786;
+    color: #a0aec0;
 }
 
 .check-icon {
@@ -297,8 +297,8 @@ body {
 /* Bottom Menu */
 .bottom-menu {
     padding: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    background-color: #1a1f2e; /* 배경색 명시 */
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background-color: #ffffff; /* 배경색 명시 */
     flex-shrink: 0; /* 중요: 아래로 밀리지 않도록 고정 */
     margin-bottom: 0; /* 여백 초기화 */
 }
@@ -311,7 +311,7 @@ body {
     padding: 12px 15px;
     background: none;
     border: none;
-    color: #8899a6;
+    color: #718096;
     font-size: 14px;
     cursor: pointer;
     border-radius: 8px;
@@ -319,8 +319,8 @@ body {
 }
 
 .menu-button:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #1a202c;
 }
 
 .menu-button i {
@@ -334,7 +334,7 @@ body {
     height: 100dvh; /* 추가 */
     display: flex;
     flex-direction: column;
-    background-color: #0f1419;
+    background-color: #f5f7fa;
     transition: margin-left 0.3s ease;
     position: relative; /* 추가 */
 }
@@ -349,15 +349,15 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 20px 30px;
-    background-color: #1a1f2e;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .menu-toggle {
     display: none;
     background: none;
     border: none;
-    color: #8899a6;
+    color: #718096;
     font-size: 20px;
     cursor: pointer;
     padding: 8px;
@@ -365,7 +365,7 @@ body {
 }
 
 .menu-toggle:hover {
-    color: #ffffff;
+    color: #1a202c;
 }
 
 .header-info {
@@ -378,20 +378,20 @@ body {
 .header-label {
     font-size: 11px;
     font-weight: 600;
-    color: #1d9bf0;
+    color: #3182ce;
     letter-spacing: 1px;
 }
 
 .header-title {
     font-size: 20px;
     font-weight: 600;
-    color: #ffffff;
+    color: #1a202c;
 }
 
 .settings-button {
     background: none;
     border: none;
-    color: #8899a6;
+    color: #718096;
     font-size: 20px;
     cursor: pointer;
     padding: 8px;
@@ -399,7 +399,7 @@ body {
 }
 
 .settings-button:hover {
-    color: #ffffff;
+    color: #1a202c;
 }
 
 /* Chat Container */
@@ -418,7 +418,7 @@ body {
 }
 
 .chat-container::-webkit-scrollbar-thumb {
-    background: #2d3748;
+    background: #cbd5e0;
     border-radius: 4px;
 }
 
@@ -442,7 +442,7 @@ body {
 .bot-name {
     font-size: 28px;
     font-weight: 700;
-    color: #ffffff;
+    color: #1a202c;
 }
 
 .bot-status {
@@ -470,7 +470,7 @@ body {
 
 .status-text {
     font-size: 14px;
-    color: #8899a6;
+    color: #718096;
 }
 
 /* Messages */
@@ -482,7 +482,7 @@ body {
 .message-date {
     text-align: center;
     font-size: 12px;
-    color: #657786;
+    color: #a0aec0;
     margin: 30px 0 20px;
 }
 
@@ -509,7 +509,7 @@ body {
 .message-sender {
     font-size: 12px;
     font-weight: 600;
-    color: #8899a6;
+    color: #718096;
 }
 
 .message-bubble {
@@ -520,9 +520,10 @@ body {
 }
 
 .bot-message .message-bubble {
-    background-color: #2d3748;
-    color: #e1e8ed;
+    background-color: #ffffff;
+    color: #1a202c;
     border-top-left-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .user-message {
@@ -535,14 +536,14 @@ body {
 }
 
 .user-message .message-bubble {
-    background-color: #1d9bf0;
+    background-color: #3182ce;
     color: #ffffff;
     border-top-right-radius: 4px;
 }
 
 .message-status {
     font-size: 11px;
-    color: #657786;
+    color: #a0aec0;
 }
 
 /* Quick Actions */
@@ -558,7 +559,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
-    background-color: #1d9bf0;
+    background-color: #3182ce;
     color: #ffffff;
     border: none;
     border-radius: 20px;
@@ -569,7 +570,7 @@ body {
 }
 
 .quick-action-btn:hover {
-    background-color: #1a8cd8;
+    background-color: #2b6cb0;
     transform: translateY(-1px);
 }
 
@@ -584,18 +585,18 @@ body {
     gap: 12px;
     padding: 15px 20px; /* 모바일을 위해 패딩 살짝 조정 */
     padding: 20px 30px;
-    background-color: #1a1f2e;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #ffffff;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
     flex-shrink: 0; /* 중요: 입력창이 찌그러지거나 밀리지 않게 고정 */
 }
 
 .attach-button {
     width: 44px;
     height: 44px;
-    background-color: #2d3748;
+    background-color: #f0f2f5;
     border: none;
     border-radius: 50%;
-    color: #8899a6;
+    color: #718096;
     font-size: 18px;
     cursor: pointer;
     transition: all 0.2s;
@@ -605,35 +606,35 @@ body {
 }
 
 .attach-button:hover {
-    background-color: #3d4758;
-    color: #ffffff;
+    background-color: #e2e8f0;
+    color: #1a202c;
 }
 
 .message-input {
     flex: 1;
     padding: 14px 20px;
-    background-color: #252d3d;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #f0f2f5;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 24px;
-    color: #e1e8ed;
+    color: #1a202c;
     font-size: 15px;
     outline: none;
     transition: all 0.2s;
 }
 
 .message-input::placeholder {
-    color: #8899a6;
+    color: #a0aec0;
 }
 
 .message-input:focus {
-    background-color: #2d3748;
-    border-color: rgba(29, 161, 242, 0.3);
+    background-color: #ffffff;
+    border-color: rgba(49, 130, 206, 0.4);
 }
 
 .send-button {
     width: 44px;
     height: 44px;
-    background-color: #1d9bf0;
+    background-color: #3182ce;
     border: none;
     border-radius: 50%;
     color: #ffffff;
@@ -646,12 +647,12 @@ body {
 }
 
 .send-button:hover {
-    background-color: #1a8cd8;
+    background-color: #2b6cb0;
     transform: scale(1.05);
 }
 
 .send-button:disabled {
-    background-color: #2d3748;
+    background-color: #cbd5e0;
     cursor: not-allowed;
     transform: scale(1);
 }
@@ -740,16 +741,17 @@ body {
     gap: 6px;
     align-items: center;
     padding: 12px 18px;
-    background-color: #2d3748;
+    background-color: #ffffff;
     border-radius: 18px;
     border-top-left-radius: 4px;
     width: fit-content;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .typing-dot {
     width: 6px;
     height: 6px;
-    background-color: #8899a6;
+    background-color: #a0aec0;
     border-radius: 50%;
     animation: typingBlink 1.4s infinite both;
 }
@@ -776,20 +778,20 @@ body {
     height: 44px;
     border-radius: 50%;
     border: none;
-    background: linear-gradient(135deg, #667eea, #1d9bf0);
+    background: linear-gradient(135deg, #667eea, #3182ce);
     color: white;
     font-size: 18px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 12px rgba(29, 161, 242, 0.6);
+    box-shadow: 0 0 12px rgba(49, 130, 206, 0.4);
     transition: all 0.25s ease;
 }
 
 .mic-button:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 18px rgba(29, 161, 242, 0.9);
+    box-shadow: 0 0 18px rgba(49, 130, 206, 0.6);
 }
 
 .mic-button:active {
@@ -812,7 +814,7 @@ body {
 /* 상태 텍스트 */
 .record-status {
     font-size: 12px;
-    color: #8899a6;
+    color: #718096;
     margin-left: 6px;
     min-width: 70px;
 }
@@ -822,7 +824,7 @@ body {
     height: 44px;
     border-radius: 50%;
     border: none;
-    background-color: #2d3748;
+    background-color: #f0f2f5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -831,7 +833,7 @@ body {
 }
 
 .mic-img-btn:hover {
-    background-color: #3d4758;
+    background-color: #e2e8f0;
 }
 
 .mic-img-btn img {
@@ -840,7 +842,7 @@ body {
 }
 
 .mic-img-btn.recording {
-    background-color: #1d9bf0;
+    background-color: #3182ce;
 }
 
 .company-logo {
@@ -848,7 +850,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 16px 10px 8px;
-    border-bottom: 1px solid #2a2a2a;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .company-logo img {

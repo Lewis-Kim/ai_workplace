@@ -1,7 +1,7 @@
 // Department Configuration
 const departments = {
     'hr': {
-        name: 'HR Team',
+        name: '인사',
         botName: 'HR Assistant',
         botAvatar: 'HRBot',
         greeting: '안녕하세요! 👋저는 HR 팀의 챗봇입니다.   👋\n직원 관계, 복리후생 또는 인사 정책과 관련하여 어떻게 도와드릴까요?',
@@ -73,7 +73,7 @@ const departments = {
         botImg: '/img/qa_chatbot.png'
     },
     'sales': {
-        name: 'Sales Team',
+        name: '영업',
         botName: 'Sales Assistant',
         botAvatar: 'SalesBot',
         greeting: '안녕하세요! 저는 영업 담당 어시스턴트입니다.  📈\n잠재 고객 발굴, 계약 체결, 고객 정보 관리, 판매 보고서 작성 등을 도와드릴 수 있습니다.',
@@ -86,7 +86,7 @@ const departments = {
 
     },
     'marketing': {
-        name: 'Marketing Team',
+        name: '마케팅',
         botName: 'Marketing Assistant',
         botAvatar: 'MarketingBot',
         greeting: '안녕하세요! 마케팅 어시스턴트입니다. 📢\n캠페인, 콘텐츠 제작, 분석 및 마케팅 전략 수립을 도와드릴 수 있습니다.',
@@ -98,13 +98,13 @@ const departments = {
         botImg: '/img/marketing_chatbot.png'
     },
     'sangsang': {
-        name: 'SangSang Story',
-        botName: '상상스토리 어시스턴트',
+        name: '문서검색',
+        botName: '문서검색 어시스턴트',
         botAvatar: 'SangSangBot',
-        greeting: '안녕하세요! 👋저는 상상스토리 어시스턴트입니다.   👋\n사내문서를 수집하여 답변드리고 있습니다. 무엇이 궁금하신가요?',
+        greeting: '안녕하세요! 문서검색 어시스턴트입니다.   👋\n사내문서를 수집하여 답변드리고 있습니다. 무엇이 궁금하신가요?',
         quickActions: [
         ],
-        botImg: '/img/tech_chatbot.png'
+        botImg: '/img/sangsangbot.png'
     },
 };
 
