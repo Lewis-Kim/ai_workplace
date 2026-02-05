@@ -157,7 +157,7 @@ function setupEventListeners() {
     $("#menuToggle, #closeSidebar").on("click", toggleSidebar);
 
     $("#bntAdmin").on("click", function() {
-        window.open("http://43.201.28.177:8000", "rag_admin");
+        window.open("http://192.168.50.8:8000", "rag_admin");
     });
 
     $(".department-item").on("click", function () {
