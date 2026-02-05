@@ -343,8 +343,28 @@ async function loadRecentlyByDept(dept) {
 
     if (dept == "sangsang") {
         var data = [];
-        data.unshift({"question": "GPAI의 정의는 어느 법 조항에 근거하고 있는가?", "department": "sangsang"});
-        data.unshift({"question": "오픈소스 라이선스로 제공되는 GPAI 모델에는 어떤 규제상 면제가 적용될 수 있는가?", "department": "sangsang"});
+        data.push({"question": "GPAI의 정의는 어느 법 조항에 근거하고 있는가?", "department": "sangsang"});
+        data.push({"question": "오픈소스 라이선스로 제공되는 GPAI 모델에는 어떤 규제상 면제가 적용될 수 있는가?", "department": "sangsang"});
+        recentlyCache[dept] = data;
+        renderRecently(dept);
+    } else if (dept == "marketing") {
+        var data = [];
+        data.push({"question": "2025년 '신규 고객 확보'의 연간 최종 수치와 목표 대비 달성률(%)은 무엇인가요?", "department": "marketing"});
+        data.push({"question": "2025년 '옴니채널' 전략의 Q3 진행률과 Q4 진행률의 차이를 계산해 주세요.", "department": "marketing"});
+        data.push({"question": "SNS 팔로워가 5,000명을 돌파한 시점은 몇 월이며, 전월 대비 몇 명이 증가했나요?", "department": "marketing"});
+        data.push({"question": "2024년 대비 2025년의 '월간 순이익'과 '마진율'은 각각 얼마나 개선되었는지 알려 주세요.", "department": "marketing"});
+        recentlyCache[dept] = data;
+        renderRecently(dept);
+    } else if (dept == "sales") {
+        var data = [];
+        data.push({"question": "2025년 ROI가 높았던 '채널개발' 성과의 연속성을 위해 2021년 이후 입사한 '운영/전략' 경력자 명단을 추출해 주세요.", "department": "sales"});
+        recentlyCache[dept] = data;
+        renderRecently(dept);
+    } else if (dept == "hr") {
+        var data = [];
+        data.push({"question": "2026년 마케팅팀 인원 증원(2명→4명) 계획에 따라, 타 부서에서 '마케팅' 경력을 보유한 대리~과장급 적임자를 추천해 주세요.", "department": "hr"});
+        data.push({"question": "'영업팀'에서 '운영' 경력을 가진 사원과 대리급 인원은 누구이며, 그들의 입사일은 언제인가요?", "department": "hr"});
+        data.push({"question": "2021년에서 2023년 사이에 입사한 직원 중 '마케팅' 경력을 가진 사람들의 이름과 소속 부서를 리스트업해 주세요.", "department": "hr"});
         recentlyCache[dept] = data;
         renderRecently(dept);
     } else {
