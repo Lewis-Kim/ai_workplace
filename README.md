@@ -140,13 +140,17 @@ CREATE TABLE `users` (
 
 조회 히스토리 테이블
 ```sql
-CREATE TABLE tracking_history (
-    seq_no BIGINT AUTO_INCREMENT PRIMARY KEY,
-    courier_cd int not null,
-    tracking_no VARCHAR(50) NOT NULL,
-    stat_cd VARCHAR(50) NOT NULL,
-    stat_nm NVARCHAR(255) NOT NULL,
-	tracking_dt DATETIME
+CREATE TABLE chat_history (
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  session_id VARCHAR(100),
+  user_id VARCHAR(50),
+  department VARCHAR(50),
+  question TEXT NOT NULL,
+  answer TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
 );
 
 ```
