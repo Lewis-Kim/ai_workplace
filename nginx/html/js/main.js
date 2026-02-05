@@ -336,15 +336,20 @@ function sendQuickAction(action) {
 // ============================
 async function loadRecentlyByDept(dept) {
     if (!currentUserId) return;
-    const res = await fetch(`/api/recent?user_id=${currentUserId}&department=${dept}&limit=5`);
-    const data = await res.json();
 
     if (dept == "sangsang") {
+        var data = [];
         data.unshift({"question": "GPAI의 정의는 어느 법 조항에 근거하고 있는가?", "department": "sangsang"});
         data.unshift({"question": "오픈소스 라이선스로 제공되는 GPAI 모델에는 어떤 규제상 면제가 적용될 수 있는가?", "department": "sangsang"});
+        recentlyCache[dept] = data;
+        renderRecently(dept);
+    } else {
+        const res = await fetch(`/api/recent?user_id=${currentUserId}&department=${dept}&limit=5`);
+        const data = await res.json();
+        recentlyCache[dept] = data;
+        renderRecently(dept);
     }
-    recentlyCache[dept] = data;
-    renderRecently(dept);
+
 }
 
 function renderRecently(dept) {
