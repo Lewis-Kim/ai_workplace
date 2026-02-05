@@ -364,6 +364,10 @@ body {
     transition: color 0.2s;
 }
 
+.sidebar.closed ~ .main-content .menu-toggle {
+    display: flex;
+}
+
 .menu-toggle:hover {
     color: #1a202c;
 }
